@@ -5,9 +5,14 @@ index.html
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>我的个人网站</title>
-  <style>
+    <style>
     body {
-      background-color: #1e1e1e;
+      /* 这里加入背景图 */
+      background-image: url('NahidaBG.png'); 
+      background-size: cover; /* 让图片铺满整个屏幕 */
+      background-position: center; /* 让图片居中显示 */
+      background-attachment: fixed; /* 滚动网页时，背景图固定不动 */
+      
       color: white;
       font-family: sans-serif;
       display: flex;
@@ -17,12 +22,30 @@ index.html
       height: 100vh;
       margin: 0;
     }
-    h1 { color: #00ffcc; }
-    p { color: #cccccc; }
+    
+    /* 为了让字在背景图上更清楚，加个半透明黑底和阴影 */
+    .content {
+      background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色遮罩 */
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      backdrop-filter: blur(5px); /* 毛玻璃特效！极度帅气 */
+    }
+
+    h1 { 
+      color: #00ffcc; 
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    }
+    p { 
+      color: #ffffff; 
+      font-size: 18px;
+    }
   </style>
 </head>
 <body>
+    <div class="content">
   <h1>Hello World！</h1>
-  <p>这是我的第一个网站，由 XXXUAN-NXD 亲手搭建。</p>
+  <p>该网站用于编程学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
+    </div>
 </body>
 </html>
