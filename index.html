@@ -4,57 +4,138 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XXXUAN档案馆</title>
-    <style>
+  <style>
+    /* 基础设置：取消默认居中，改为相对定位，让元素可以自由布局 */
     body {
-      /* 这里加入背景图 */
       background-image: url('NahidaBG.webp'); 
-      background-size: cover; /* 让图片铺满整个屏幕 */
-      background-position: center; /* 让图片居中显示 */
-      background-attachment: fixed; /* 滚动网页时，背景图固定不动 */
-      
+      background-size: cover; 
+      background-position: center; 
+      background-attachment: fixed; 
       color: white;
       font-family: sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
       height: 100vh;
       margin: 0;
-    }
-    
-    /* 为了让字在背景图上更清楚，加个半透明黑底和阴影 */
-    .content {
-      background-color: rgba(0, 0, 0, 0.6); /* 半透明黑色遮罩 */
-      padding: 40px;
-      border-radius: 15px;
-      text-align: center;
-      backdrop-filter: blur(5px); /* 毛玻璃特效！极度帅气 */
+      overflow: hidden; /* 防止出现滚动条，保持版面整洁 */
+      position: relative; /* 为内部的绝对定位做参考 */
     }
 
+    /* ---- 左侧主体内容区 ---- */
+    .content {
+      position: absolute;
+      top: 50%;
+      left: 10%; /* 距离左侧10%，实现居左 */
+      transform: translateY(-50%); /* 配合top，实现垂直居中，但不影响水平 */
+      background-color: rgba(0, 0, 0, 0.6); 
+      padding: 40px;
+      border-radius: 15px;
+      text-align: left; /* 文字居左 */
+      backdrop-filter: blur(5px); 
+      max-width: 400px; /* 限制最大宽度，防止挤压中间 */
+    }
+    
     h1 { 
       color: #00ffcc; 
       text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      margin-top: 0;
     }
     p { 
       color: #ffffff; 
       font-size: 18px;
+      line-height: 1.6;
     }
-        .footer {
-      position: absolute; /* 绝对定位，脱离排版流 */
-      bottom: 20px; /* 距离底部 20 像素 */
-      width: 100%; /* 占满全宽 */
-      text-align: center; /* 文字居中 */
-      color: rgba(255, 255, 255, 0.7); /* 半透明白色，不抢主角风头 */
-      font-size: 14px; /* 字体小一点 */
-      letter-spacing: 1px; /* 字间距稍微拉开一点，显得高级 */
+
+    /* ---- 顶部 BGM 信息框 ---- */
+    .top-info {
+      position: absolute;
+      top: 20px;
+      left: 60%; /* 居中偏右 */
+      background-color: rgba(0, 0, 0, 0.6); /* 同款半透明黑底 */
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      backdrop-filter: blur(5px);
+    }
+
+    /* ---- 底部信息栏（版权 + 背景图信息） ---- */
+    .footer {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+    
+    /* 底部关于背景图的说明文字（小字，无黑底） */
+    .bg-note {
+      display: block;
+      font-size: 12px;
+      margin-top: 5px;
+      opacity: 0.6;
+    }
+
+    /* ---- BGM 播放按钮 ---- */
+    .music-btn {
+      position: absolute; 
+      bottom: 20px; 
+      right: 20px; 
+      padding: 10px 20px;
+      background-color: rgba(0, 255, 204, 0.8); 
+      color: #1e1e1e;
+      border: none; 
+      border-radius: 30px; 
+      font-weight: bold; 
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+      transition: all 0.3s; 
+      z-index: 100;
+    }
+    .music-btn:hover { 
+      background-color: #00ffcc; 
+      transform: scale(1.05); 
     }
   </style>
 </head>
 <body>
-    <div class="content">
-        <div class="footer">Copyright © 2026 XXXUAN</div>
-  <h1>Hello World！</h1>
-  <p>该网站用于编程学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
-    </div>
+
+  <!-- 顶部 BGM 信息 -->
+  <div class="top-info">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
+
+  <!-- 左侧主体内容 -->
+  <div class="content">
+    <h1>Hello World！</h1>
+    <p>该网站用于编程学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
+  </div>
+
+  <!-- 底部信息 -->
+  <div class="footer">
+    Copyright © 2026 XXXUAN
+    <span class="bg-note">Background：Nahida From Genshin Impact ©miHoYo</span>
+  </div>
+
+  <!-- 音乐播放 -->
+  <audio id="bgm" loop>
+    <source src="nijuugoji_no_jounetsu-Inst.ogg" type="audio/ogg">
+    <source src="nijuugoji_no_jounetsu-Inst.mp3" type="audio/mpeg">
+  </audio>
+  <button id="music-btn" class="music-btn">▶ 播放 BGM</button>
+
+  <script>
+    const bgm = document.getElementById('bgm');
+    const btn = document.getElementById('music-btn');
+
+    btn.addEventListener('click', () => {
+      if (bgm.paused) {
+        bgm.play();
+        btn.innerText = "⏸ 暂停 BGM";
+      } else {
+        bgm.pause();
+        btn.innerText = "▶ 播放 BGM";
+      }
+    });
+  </script>
+
 </body>
 </html>
