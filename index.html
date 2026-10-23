@@ -19,18 +19,27 @@
       position: relative; /* 为内部的绝对定位做参考 */
     }
 
-    /* ---- 左侧主体内容区 ---- */
+    /* ---- 左侧主体内容区（改造为边栏） ---- */
     .content {
       position: absolute;
-      top: 50%;
-      left: 10%; /* 距离左侧10%，实现居左 */
-      transform: translateY(-50%); /* 配合top，实现垂直居中，但不影响水平 */
+      top: 0;
+      left: 0;
+      height: 100vh; 
+      width: 25vw; /* 这里控制边栏宽度：20vw变窄，30vw变宽 */
+      max-width: 400px; /* 防止在超大屏幕上变得太宽 */
+      
       background-color: rgba(0, 0, 0, 0.6); 
       padding: 40px;
-      border-radius: 15px;
       text-align: left; /* 文字居左 */
       backdrop-filter: blur(5px); 
-      max-width: 400px; /* 限制最大宽度，防止挤压中间 */
+      
+      border-radius: 0 15px 15px 0; /* 左侧贴边，右侧圆角 */
+      
+      /* 让内部文字在边栏中垂直居中 */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
     }
     
     h1 { 
@@ -54,6 +63,17 @@
       border-radius: 10px;
       font-size: 14px;
       backdrop-filter: blur(5px);
+      
+      /* 新增：默认隐身，且带有淡入淡出过渡 */
+      opacity: 0; 
+      visibility: hidden; 
+      transition: all 0.5s ease; 
+    }
+
+    /* 新增：BGM信息框的出现状态 */
+    .top-info.show {
+      opacity: 1;
+      visibility: visible;
     }
 
     /* ---- 底部信息栏（版权 + 背景图信息） ---- */
@@ -101,11 +121,11 @@
 <body>
 
   <!-- 顶部 BGM 信息 -->
-  <div class="top-info">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
+  <div class="top-info" id="bgm-info">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
 
   <!-- 左侧主体内容 -->
   <div class="content">
-    <h1>Hello World！</h1>
+    <h1>欢迎回来！</h1>
     <p>该网站用于编程学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
   </div>
 
@@ -125,14 +145,17 @@
   <script>
     const bgm = document.getElementById('bgm');
     const btn = document.getElementById('music-btn');
+    const bgmInfo = document.getElementById('bgm-info'); // 获取顶部信息框
 
     btn.addEventListener('click', () => {
       if (bgm.paused) {
         bgm.play();
         btn.innerText = "⏸ 暂停 BGM";
+        bgmInfo.classList.add('show'); // 播放时显示信息
       } else {
         bgm.pause();
         btn.innerText = "▶ 播放 BGM";
+        bgmInfo.classList.remove('show'); // 暂停时隐藏信息
       }
     });
   </script>
