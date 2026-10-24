@@ -80,7 +80,8 @@
     .footer {
       position: absolute;
       bottom: 20px;
-      left: 0;
+      padding-left: 30vw; /* 让底部文字栏直接避开左边边栏的宽度 */
+      width: calc(100% - 30vw); /* 动态计算剩下的宽度 */
       width: 100%;
       text-align: center;
       color: rgba(255, 255, 255, 0.7);
@@ -140,7 +141,7 @@
     <source src="nijuugoji_no_jounetsu-Inst.ogg" type="audio/ogg">
     <source src="nijuugoji_no_jounetsu-Inst.mp3" type="audio/mpeg">
   </audio>
-  <button id="music-btn" class="music-btn">▶ 播放 BGM</button>
+  <button id="music-btn" class="music-btn">▶ ２５時の旋律</button>
 
   <script>
     const bgm = document.getElementById('bgm');
@@ -150,11 +151,11 @@
     btn.addEventListener('click', () => {
       if (bgm.paused) {
         bgm.play();
-        btn.innerText = "⏸ 暂停 BGM";
+        btn.innerText = "⏸ 夜幕の静謐";
         bgmInfo.classList.add('show'); // 播放时显示信息
       } else {
         bgm.pause();
-        btn.innerText = "▶ 播放 BGM";
+        btn.innerText = "▶ ２５時の旋律";
         bgmInfo.classList.remove('show'); // 暂停时隐藏信息
       }
     });
