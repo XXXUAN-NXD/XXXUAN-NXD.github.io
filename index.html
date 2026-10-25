@@ -54,7 +54,7 @@
     /* ========== 左侧自我介绍按钮 ========== */
     .intro-btn {
       margin-top: 30px;
-      align-self: flex-start; /* 让按钮靠左对齐 */
+      align-self: flex-start;
       padding: 10px 24px;
       background-color: transparent;
       color: var(--accent);
@@ -161,7 +161,6 @@
     .essay-detail-view {
       display: none; position: fixed; inset: 0; background-color: rgba(10, 10, 10, 0.97);
       flex-direction: column; 
-      /* 👇 去掉了顶部的 30px padding，让内容可以滚到最顶端 */
       padding: 0 30px 30px 30px; 
       overflow-y: auto; overscroll-behavior: contain; z-index: 1000;
     }
@@ -169,11 +168,9 @@
 
     .detail-header {
       position: sticky; top: 0; z-index: 10; 
-      /* 👇 加上顶部留白，并利用负边距撑满屏幕宽度 */
       padding: 30px 0 20px 0; 
       margin: 0 -30px; 
       padding-left: 30px; padding-right: 30px;
-      /* 👇 纯黑底色，绝对阻挡下方文字 */
       background-color: #0a0a0a; 
     }
     
@@ -205,9 +202,8 @@
       .footer { position: relative; bottom: auto; padding: 0 20px 90px; }
       .essay-modal { padding: 24px 16px; }
       
-      /* 👇 同步修复移动端的穿透问题 */
       .essay-detail-view { padding: 0 16px 20px 16px; }
-      .detail-header { padding: 20px 0 15px 0; margin: 0 -16px; padding-left: 16px; padding-right: 16px; }
+      .detail-header { padding: 20px 15px 15px 15px; margin: 0 -16px; }
     }
   </style>
 </head>
@@ -244,24 +240,25 @@
     </div>
   </div>
 
-  <!-- ========== 随笔全屏画廊 ========== -->
+  <!-- ========== 随笔全屏画廊 (列表页) ========== -->
   <div id="essay-modal" class="essay-modal" aria-hidden="true">
     <div class="essay-header">
       <h2>XXXUAN随笔手记——这一刻想法&予你我的内心</h2>
       <button id="close-essay" class="close-btn" type="button" aria-label="关闭随笔">&times;</button>
     </div>
     <div class="essay-content" id="essay-list-container"></div>
+  </div>
 
-    <!-- 随笔详情页 -->
-    <div id="essay-detail-view" class="essay-detail-view" aria-hidden="true">
-      <div class="detail-header">
-        <button class="back-btn" type="button">← 返回列表</button>
-      </div>
-      <div class="detail-content">
-        <h1 id="detail-title">标题</h1>
-        <span id="detail-date" class="essay-date">日期</span>
-        <div id="detail-body" class="detail-body"></div>
-      </div>
+  <!-- ========== [已搬出外层] 随笔详情页 ========== -->
+  <!-- 注意：现在它是 essay-modal 的兄弟节点，直接受 body 控制 -->
+  <div id="essay-detail-view" class="essay-detail-view" aria-hidden="true">
+    <div class="detail-header">
+      <button class="back-btn" type="button">← 返回列表</button>
+    </div>
+    <div class="detail-content">
+      <h1 id="detail-title">标题</h1>
+      <span id="detail-date" class="essay-date">日期</span>
+      <div id="detail-body" class="detail-body"></div>
     </div>
   </div>
 
@@ -332,9 +329,12 @@
         detailTitle.textContent = essay.title || '无标题';
         detailDate.textContent = essay.date || '';
         detailBody.innerHTML = renderRichText(essay.content);
+        
+        // 👇 关键修复：点击卡片时，确保详情页自己的滚动条在顶部
+        detailView.scrollTop = 0; 
+        
         detailView.classList.add('is-open');
         detailView.setAttribute('aria-hidden', 'false');
-        detailView.scrollTop = 0;
         requestAnimationFrame(() => backBtn.focus({ preventScroll: true }));
       }
 
