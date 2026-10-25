@@ -18,7 +18,7 @@
     body {
       min-height: 100%;
       margin: 0;
-      background-image: url('NahidaBG.jpg');
+      background-image: url('NahidaBG.webp');
       background-size: cover;
       background-position: center;
       background-attachment: fixed;
@@ -119,15 +119,36 @@
     .essay-modal {
       display: none; position: fixed; inset: 0; background-color: rgba(10, 10, 10, 0.85);
       backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 900;
-      flex-direction: column; padding: 40px; overflow-y: auto; overscroll-behavior: contain;
+      flex-direction: column; 
+      
+      /* 👇 修改：移除顶部 padding，让 header 可以顶格吸附 */
+      padding: 0 40px 40px 40px; 
+      overflow-y: auto; overscroll-behavior: contain;
     }
     .essay-modal.is-open { display: flex; animation: fadeIn 0.3s ease both; }
 
+    /* 👇 修改：头部吸顶魔法 */
     .essay-header {
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 20px; margin-bottom: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+      
+      position: sticky; 
+      top: 0; 
+      z-index: 10;
+      margin: 0 -40px 30px -40px; /* 左右负边距撑满 */
+      padding: 40px 40px 20px 40px; /* 自己拥有顶部内边距 */
+      background-color: #0a0a0a; /* 纯黑底色，防穿透 */
     }
-    .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; }
+
+    /* 👇 修改：优化长标题在窄屏下的显示 */
+    .essay-header h2 { 
+      color: var(--accent); 
+      margin: 0; 
+      letter-spacing: 2px; 
+      font-size: 22px; 
+      line-height: 1.4; 
+      margin-right: 15px; /* 防止和关闭按钮贴太近 */
+    }
 
     .close-btn {
       background: none; border: none; padding: 0; line-height: 1; color: var(--accent);
@@ -200,7 +221,14 @@
       .projects { position: relative; top: auto; right: auto; transform: none; margin: 40px 24px 40px; }
       .project-btn { width: 100%; }
       .footer { position: relative; bottom: auto; padding: 0 20px 90px; }
-      .essay-modal { padding: 24px 16px; }
+      
+      /* 👇 移动端同步修改吸顶逻辑 */
+      .essay-modal { padding: 0 16px 24px 16px; }
+      .essay-header { 
+        margin: 0 -16px 20px -16px; 
+        padding: 24px 16px 15px 16px; 
+      }
+      .essay-header h2 { font-size: 18px; } /* 移动端标题稍微缩小一点 */
       
       .essay-detail-view { padding: 0 16px 20px 16px; }
       .detail-header { padding: 20px 15px 15px 15px; margin: 0 -16px; }
