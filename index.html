@@ -5,11 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="XXXUAN 的赛博小窝 — 编程学习、随笔手记、音乐分享与友情链接。">
   <title>XXXUAN-Archive</title>
+  <link rel="preload" as="image" href="NahidaBG.webp">
   <style>
     /* ========== 变量 & 基础 ========== */
     :root {
       --accent: #00ffcc;
-      --accent-rgb: 0, 255, 204; /* ✅ 新增：用于支持透明度的 RGB 变量 */
+      --accent-rgb: 0, 255, 204;
       --panel: rgba(0, 0, 0, 0.6);
       --font-sans: system-ui, -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
     }
@@ -53,11 +54,12 @@
       margin-top: 30px; align-self: flex-start; padding: 10px 24px;
       background-color: transparent; color: var(--accent); border: 1px solid var(--accent);
       border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: bold;
-      cursor: pointer; transition: all 0.3s ease;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
     .intro-btn:hover {
       background-color: var(--accent); color: #000;
-      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4); /* ✅ 修改：使用 RGB 变量 */
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
 
     .intro-actions { display: flex; gap: 15px; margin-top: 30px; align-self: flex-start; }
@@ -86,11 +88,12 @@
     /* ========== 音乐按钮 ========== */
     .music-btn {
       position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;
-      background-color: rgba(var(--accent-rgb), 0.8); color: #1e1e1e; /* ✅ 修改 */
+      background-color: rgba(var(--accent-rgb), 0.8); color: #1e1e1e;
       border: none; border-radius: 30px; font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s; z-index: 100;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s, transform 0.3s; z-index: 100;
     }
-    .music-btn:hover { background-color: var(--accent); transform: scale(1.05); } /* ✅ 修改 */
+    .music-btn:hover { background-color: var(--accent); transform: scale(1.05); }
     .music-btn:disabled { opacity: 0.6; cursor: wait; }
 
     /* ========== 自定义主题色调色盘 ========== */
@@ -98,11 +101,16 @@
       position: fixed; bottom: 75px; right: 25px; width: 32px; height: 32px;
       border-radius: 50%; background-color: var(--panel); border: 1px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s;
+      cursor: pointer; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.3s, box-shadow 0.3s;
     }
     .color-picker-wrap:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4); /* ✅ 修改 */
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
+    }
+    .color-picker-wrap:focus-within {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
     }
     .color-picker-wrap input[type="color"] {
       opacity: 0; position: absolute; width: 100%; height: 100%; cursor: pointer;
@@ -121,8 +129,8 @@
       transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
     }
     .project-btn:hover {
-      background-color: rgba(var(--accent-rgb), 0.2); /* ✅ 修改 */
-      transform: scale(1.05); box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4); /* ✅ 修改 */
+      background-color: rgba(var(--accent-rgb), 0.2);
+      transform: scale(1.05); box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
 
     /* ========== 通用全屏弹窗 ========== */
@@ -137,7 +145,8 @@
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       position: sticky; top: 0; z-index: 10;
-      margin: 0 -40px 30px -40px; padding: 40px 40px 20px 40px; background-color: #0a0a0a;
+      margin: 0 -40px 30px -40px; padding: 40px 40px 20px 40px;
+      background-color: rgba(10, 10, 10, 0.95); /* ✅ 改动：原 #0a0a0a，改为带透明度 */
     }
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; }
 
@@ -154,12 +163,13 @@
 
     .essay-card {
       background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(var(--accent-rgb), 0.3); /* ✅ 修改 */
-      padding: 25px; border-radius: 15px; transition: all 0.3s; cursor: pointer;
+      border: 1px solid rgba(var(--accent-rgb), 0.3);
+      padding: 25px; border-radius: 15px; cursor: pointer;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
     }
     .essay-card:hover, .essay-card:focus-visible {
       background: rgba(255, 255, 255, 0.1); border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2); /* ✅ 修改 */
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
       transform: translateY(-5px); outline: none;
     }
     .essay-card h3 { color: #fff; margin: 0 0 8px; font-size: 20px; }
@@ -170,12 +180,13 @@
     .friend-link {
       display: flex; justify-content: space-between; align-items: center;
       padding: 20px 25px; background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(var(--accent-rgb), 0.3); /* ✅ 修改 */
-      border-radius: 15px; color: #fff; text-decoration: none; transition: all 0.3s ease;
+      border: 1px solid rgba(var(--accent-rgb), 0.3);
+      border-radius: 15px; color: #fff; text-decoration: none;
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
     }
     .friend-link:hover {
       background: rgba(255, 255, 255, 0.1); border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2); /* ✅ 修改 */
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
       transform: translateY(-3px);
     }
     .friend-name { font-size: 18px; font-weight: bold; color: var(--accent); }
@@ -199,12 +210,14 @@
 
     .detail-header {
       position: sticky; top: 0; z-index: 10; padding: 30px 0 20px 0; margin: 0 -30px;
-      padding-left: 30px; padding-right: 30px; background-color: #0a0a0a;
+      padding-left: 30px; padding-right: 30px;
+      background-color: rgba(10, 10, 10, 0.95); /* ✅ 改动：原 #0a0a0a，改为带透明度 */
     }
     .back-btn {
-      background: rgba(var(--accent-rgb), 0.1); /* ✅ 修改 */
+      background: rgba(var(--accent-rgb), 0.1);
       color: var(--accent); border: 1px solid var(--accent);
-      padding: 10px 20px; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s, color 0.3s;
+      padding: 10px 20px; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer;
+      transition: background-color 0.3s, color 0.3s;
     }
     .back-btn:hover { background: var(--accent); color: #000; }
 
@@ -228,14 +241,13 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .essay-modal::-webkit-scrollbar, .essay-detail-view::-webkit-scrollbar { width: 8px; }
-    /* ✅ 修改：滚动条也使用 RGB 变量 */
-    .essay-modal::-webkit-scrollbar-thumb, .essay-detail-view::-webkit-scrollbar-thumb { 
-      background: rgba(var(--accent-rgb), 0.4); border-radius: 4px; 
+    .essay-modal::-webkit-scrollbar-thumb, .essay-detail-view::-webkit-scrollbar-thumb {
+      background: rgba(var(--accent-rgb), 0.4); border-radius: 4px;
     }
 
     .essay-modal, .essay-detail-view {
       scrollbar-width: thin;
-      scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent; /* ✅ 修改 */
+      scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
     }
 
     /* ========== 移动端适配 ========== */
@@ -280,9 +292,9 @@
     <button id="open-essays" class="project-btn" type="button">📝 随笔手记</button>
   </div>
 
-  <div id="intro-modal" class="essay-modal" aria-hidden="true">
+  <div id="intro-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-hidden="true">
     <div class="essay-header">
-      <h2>关于XXXUAN（我）</h2>
+      <h2 id="intro-title">关于XXXUAN（我）</h2>
       <button id="close-intro" class="close-btn" type="button" aria-label="关闭">&times;</button>
     </div>
     <div class="essay-content essay-content--narrow">
@@ -295,10 +307,10 @@
     </div>
   </div>
 
-  <div id="links-modal" class="essay-modal" aria-hidden="true">
+  <div id="links-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="links-title" aria-hidden="true">
     <div class="essay-header">
       <div class="modal-title-group">
-        <h2 class="modal-title">友情链接 - 通过Internet连结你我<br>——今夜，群星于此相拥</h2>
+        <h2 id="links-title" class="modal-title">友情链接 - 通过Internet连结你我<br>——今夜，群星于此相拥</h2>
         <span class="modal-hint">💡 点击下方卡片以访问对应站点</span>
       </div>
       <button id="close-links" class="close-btn" type="button" aria-label="关闭">&times;</button>
@@ -308,9 +320,10 @@
     </div>
   </div>
 
-  <div id="essay-modal" class="essay-modal" aria-hidden="true">
+  <div id="essay-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="essay-title" aria-hidden="true">
     <div class="essay-header">
-      <h2>XXXUAN随笔手记——这一刻想法&赠你我的内心，予我你的长夜</h2>
+      <h2 id="essay-title">XXXUAN随笔手记——这一刻想法&赠你我的内心，予我你的长夜</h2>
+      <span class="modal-hint">💡 点击卡片阅读全文</span>
       <button id="close-essay" class="close-btn" type="button" aria-label="关闭随笔">&times;</button>
     </div>
     <div class="essay-content" id="essay-list-container">
@@ -318,7 +331,7 @@
     </div>
   </div>
 
-  <div id="essay-detail-view" class="essay-detail-view" aria-hidden="true">
+  <div id="essay-detail-view" class="essay-detail-view" role="dialog" aria-modal="true" aria-labelledby="detail-title" aria-hidden="true">
     <div class="detail-header">
       <button class="back-btn" type="button">← 返回列表</button>
     </div>
@@ -341,7 +354,7 @@
   <button id="music-btn" class="music-btn" type="button" aria-pressed="false">▶ ２５時の旋律</button>
 
   <div class="color-picker-wrap" title="自定义主题色">
-    <input type="color" id="theme-color-picker" value="#00ffcc">
+    <input type="color" id="theme-color-picker" value="#00ffcc" aria-label="自定义主题色">
     <span class="color-picker-icon">🎨</span>
   </div>
 
@@ -364,6 +377,23 @@
         bgmInfo.classList.toggle('show', playing);
         bgmInfo.setAttribute('aria-hidden', String(!playing));
       }
+
+      // ✅ P1-5：播放中途出错（文件损坏 / 网络断）时把 UI 切回正确状态
+      let bgmErrorTimer = null;
+      bgm.addEventListener('error', () => {
+        if (bgmErrorTimer) return;
+        console.error('BGM 播放出错');
+        setBgmUI(false);
+        bgmInfo.textContent = '音频加载失败，请检查音频文件是否存在';
+        bgmInfo.classList.add('show');
+        bgmInfo.setAttribute('aria-hidden', 'false');
+        bgmErrorTimer = setTimeout(() => {
+          bgmInfo.textContent = BGM_TEXT;
+          bgmInfo.classList.remove('show');
+          bgmInfo.setAttribute('aria-hidden', 'true');
+          bgmErrorTimer = null;
+        }, 3000);
+      }, true);
 
       musicBtn.addEventListener('click', async () => {
         if (bgmToggling) return;
@@ -413,12 +443,52 @@
         document.querySelector('.color-picker-wrap')
       ].filter(Boolean);
 
+      // ✅ P2：inert 兼容兜底（Safari < 15.5 不支持 inert 时退化处理）
+      const supportsInert = 'inert' in HTMLElement.prototype;
+      function applyInert(el, value) {
+        if (supportsInert) {
+          el.inert = value;
+        } else {
+          if (value) {
+            el.setAttribute('aria-hidden', 'true');
+            el.style.pointerEvents = 'none';
+          } else {
+            el.removeAttribute('aria-hidden');
+            el.style.pointerEvents = '';
+          }
+        }
+      }
+
       function syncPageState() {
         const detailOpen = detailView.classList.contains('is-open');
         const anyOpen = [introModal, linksModal, essayModal, detailView].some(el => el.classList.contains('is-open'));
-        pageRegions.forEach(el => { el.inert = anyOpen; });
-        essayModal.inert = detailOpen;
+        pageRegions.forEach(el => applyInert(el, anyOpen));
+        applyInert(essayModal, detailOpen);
         document.body.classList.toggle('modal-open', anyOpen);
+      }
+
+      // ✅ P2：焦点陷阱（Tab 在弹窗内循环）
+      const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      function getFocusable(container) {
+        return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR))
+          .filter(el => el.offsetParent !== null || el === document.activeElement);
+      }
+      function trapFocus(modal, e) {
+        if (e.key !== 'Tab') return;
+        const items = getFocusable(modal);
+        if (!items.length) return;
+        const first = items[0];
+        const last = items[items.length - 1];
+        const active = document.activeElement;
+        if (e.shiftKey) {
+          if (active === first || !modal.contains(active)) {
+            e.preventDefault(); last.focus();
+          }
+        } else {
+          if (active === last || !modal.contains(active)) {
+            e.preventDefault(); first.focus();
+          }
+        }
       }
 
       function openModalEl(modal, trigger) {
@@ -497,7 +567,8 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (!Array.isArray(data)) throw new Error('JSON 顶层必须是数组');
-          essaysData = data.filter(item => item && typeof item === 'object');
+          // ✅ P3：排除数组项（防止 essays.json 里混入数组导致后续字段读取异常）
+          essaysData = data.filter(item => item && typeof item === 'object' && !Array.isArray(item));
           renderEssays();
         } catch (err) {
           console.error('加载随笔失败：', err);
@@ -560,46 +631,54 @@
       document.getElementById('open-links').addEventListener('click', (e) => openModalEl(linksModal, e.currentTarget));
       document.getElementById('close-links').addEventListener('click', () => closeModalEl(linksModal));
 
+      // ✅ P2：Escape 关闭 + Tab 焦点陷阱合并到一个 keydown
       document.addEventListener('keydown', (e) => {
-        if (e.key !== 'Escape') return;
-        if (detailView.classList.contains('is-open')) closeEssayDetail();
-        else if (essayModal.classList.contains('is-open')) closeModalEl(essayModal);
-        else if (introModal.classList.contains('is-open')) closeModalEl(introModal);
-        else if (linksModal.classList.contains('is-open')) closeModalEl(linksModal);
+        if (e.key === 'Escape') {
+          if (detailView.classList.contains('is-open')) { closeEssayDetail(); return; }
+          if (essayModal.classList.contains('is-open')) { closeModalEl(essayModal); return; }
+          if (introModal.classList.contains('is-open')) { closeModalEl(introModal); return; }
+          if (linksModal.classList.contains('is-open')) { closeModalEl(linksModal); return; }
+          return;
+        }
+        const activeModal =
+          detailView.classList.contains('is-open') ? detailView :
+          essayModal.classList.contains('is-open') ? essayModal :
+          introModal.classList.contains('is-open') ? introModal :
+          linksModal.classList.contains('is-open') ? linksModal : null;
+        if (activeModal) trapFocus(activeModal, e);
       });
 
       /* ============================================================
-         七、✅ 自定义主题色模块 (包含 RGB 计算)
+         七、自定义主题色模块
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
 
-      // 工具函数：将 Hex 转换为 R, G, B 字符串
+      // ✅ P1-3：加校验，非法输入返回 null（不再静默变黑）
       function hexToRgb(hex) {
-        let r = 0, g = 0, b = 0;
-        if (hex.length === 4) {
-          r = parseInt(hex[1] + hex[1], 16);
-          g = parseInt(hex[2] + hex[2], 16);
-          b = parseInt(hex[3] + hex[3], 16);
-        } else if (hex.length === 7) {
-          r = parseInt(hex.substring(1, 3), 16);
-          g = parseInt(hex.substring(3, 5), 16);
-          b = parseInt(hex.substring(5, 7), 16);
-        }
-        return `${r}, ${g}, ${b}`;
+        const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex || '');
+        if (!m) return null;
+        let h = m[1];
+        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
       }
 
-      const savedColor = localStorage.getItem('archive-theme-color');
-      if (savedColor) {
+      // ✅ P1-4：localStorage 读写都包 try/catch（Safari 隐私模式 / 配额满）
+      let savedColor = null;
+      try { savedColor = localStorage.getItem('archive-theme-color'); } catch {}
+      const savedRgb = savedColor ? hexToRgb(savedColor) : null;
+      if (savedColor && savedRgb) {
         document.documentElement.style.setProperty('--accent', savedColor);
-        document.documentElement.style.setProperty('--accent-rgb', hexToRgb(savedColor)); // ✅ 同步初始化 RGB
+        document.documentElement.style.setProperty('--accent-rgb', savedRgb);
         colorPicker.value = savedColor;
       }
 
       colorPicker.addEventListener('input', (e) => {
         const newColor = e.target.value;
+        const rgb = hexToRgb(newColor);
+        if (!rgb) return;
         document.documentElement.style.setProperty('--accent', newColor);
-        document.documentElement.style.setProperty('--accent-rgb', hexToRgb(newColor)); // ✅ 同步更新 RGB
-        localStorage.setItem('archive-theme-color', newColor);
+        document.documentElement.style.setProperty('--accent-rgb', rgb);
+        try { localStorage.setItem('archive-theme-color', newColor); } catch {}
       });
 
       // 启动
