@@ -135,8 +135,11 @@
 
     /* ========== 通用全屏弹窗 ========== */
     .essay-modal {
-      display: none; position: fixed; inset: 0; background-color: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: 900;
+      display: none; position: fixed; inset: 0; 
+      /* 👇 优化：背景变浅，毛玻璃加重 */
+      background-color: rgba(10, 10, 10, 0.65);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); 
+      z-index: 900;
       flex-direction: column; padding: 0 40px 40px 40px; overflow-y: auto; overscroll-behavior: contain;
     }
     .essay-modal.is-open { display: flex; animation: fadeIn 0.3s ease both; }
@@ -146,7 +149,9 @@
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       position: sticky; top: 0; z-index: 10;
       margin: 0 -40px 30px -40px; padding: 40px 40px 20px 40px;
-      background-color: rgba(10, 10, 10, 0.95); /* ✅ 改动：原 #0a0a0a，改为带透明度 */
+      /* 👇 优化：顶部栏也加上毛玻璃 */
+      background-color: rgba(10, 10, 10, 0.65); 
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; }
 
@@ -203,7 +208,9 @@
 
     /* ========== 随笔详情页 ========== */
     .essay-detail-view {
-      display: none; position: fixed; inset: 0; background-color: rgba(10, 10, 10, 0.97);
+      display: none; position: fixed; inset: 0; 
+      /* 👇 优化：详情页背景也稍微亮一点点 */
+      background-color: rgba(10, 10, 10, 0.75);
       flex-direction: column; padding: 0 30px 30px 30px; overflow-y: auto; overscroll-behavior: contain; z-index: 1000;
     }
     .essay-detail-view.is-open { display: flex; animation: fadeIn 0.25s ease both; }
@@ -211,7 +218,9 @@
     .detail-header {
       position: sticky; top: 0; z-index: 10; padding: 30px 0 20px 0; margin: 0 -30px;
       padding-left: 30px; padding-right: 30px;
-      background-color: rgba(10, 10, 10, 0.95); /* ✅ 改动：原 #0a0a0a，改为带透明度 */
+      /* 👇 优化：详情页顶部也加上毛玻璃 */
+      background-color: rgba(10, 10, 10, 0.65);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
     }
     .back-btn {
       background: rgba(var(--accent-rgb), 0.1);
@@ -378,7 +387,6 @@
         bgmInfo.setAttribute('aria-hidden', String(!playing));
       }
 
-      // ✅ P1-5：播放中途出错（文件损坏 / 网络断）时把 UI 切回正确状态
       let bgmErrorTimer = null;
       bgm.addEventListener('error', () => {
         if (bgmErrorTimer) return;
@@ -443,7 +451,6 @@
         document.querySelector('.color-picker-wrap')
       ].filter(Boolean);
 
-      // ✅ P2：inert 兼容兜底（Safari < 15.5 不支持 inert 时退化处理）
       const supportsInert = 'inert' in HTMLElement.prototype;
       function applyInert(el, value) {
         if (supportsInert) {
@@ -467,7 +474,6 @@
         document.body.classList.toggle('modal-open', anyOpen);
       }
 
-      // ✅ P2：焦点陷阱（Tab 在弹窗内循环）
       const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
       function getFocusable(container) {
         return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR))
@@ -567,7 +573,6 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (!Array.isArray(data)) throw new Error('JSON 顶层必须是数组');
-          // ✅ P3：排除数组项（防止 essays.json 里混入数组导致后续字段读取异常）
           essaysData = data.filter(item => item && typeof item === 'object' && !Array.isArray(item));
           renderEssays();
         } catch (err) {
@@ -631,7 +636,6 @@
       document.getElementById('open-links').addEventListener('click', (e) => openModalEl(linksModal, e.currentTarget));
       document.getElementById('close-links').addEventListener('click', () => closeModalEl(linksModal));
 
-      // ✅ P2：Escape 关闭 + Tab 焦点陷阱合并到一个 keydown
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (detailView.classList.contains('is-open')) { closeEssayDetail(); return; }
@@ -653,7 +657,6 @@
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
 
-      // ✅ P1-3：加校验，非法输入返回 null（不再静默变黑）
       function hexToRgb(hex) {
         const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex || '');
         if (!m) return null;
@@ -662,7 +665,6 @@
         return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
       }
 
-      // ✅ P1-4：localStorage 读写都包 try/catch（Safari 隐私模式 / 配额满）
       let savedColor = null;
       try { savedColor = localStorage.getItem('archive-theme-color'); } catch {}
       const savedRgb = savedColor ? hexToRgb(savedColor) : null;
