@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="XXXUAN 的赛博小窝 — 编程学习、随笔手记、音乐分享与友情链接。">
   <title>XXXUAN-Archive</title>
   <style>
     /* ========== 变量 & 基础 ========== */
@@ -28,6 +29,9 @@
       overflow: hidden;
     }
 
+    /* ✅ 弹窗打开时统一锁定页面滚动（覆盖移动端媒体查询） */
+    body.modal-open { overflow: hidden; }
+
     /* ========== 左侧主体 ========== */
     .content {
       position: absolute;
@@ -44,8 +48,12 @@
       border-radius: 0 15px 15px 0;
       display: flex;
       flex-direction: column;
+      /* ✅ 内容溢出时顶部不被裁切，且面板内部可滚动 */
       justify-content: center;
+      justify-content: safe center;
       text-align: left;
+      overflow-y: auto;
+      overscroll-behavior: contain;
     }
 
     h1 { color: var(--accent); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); margin-top: 0; }
@@ -94,8 +102,11 @@
 
     /* ========== 底部版权 ========== */
     .footer {
-      position: absolute; bottom: 20px; left: 0; width: 100%; padding-left: 5vw; padding-right: 20px;
-      text-align: center; color: rgba(255, 255, 255, 0.7); font-size: 14px; letter-spacing: 1px; pointer-events: none;
+      position: absolute; bottom: 20px; left: 0; width: 100%;
+      padding: 0 20px;
+      text-align: center; color: rgba(255, 255, 255, 0.7);
+      font-size: 14px; letter-spacing: 1px; pointer-events: none;
+      z-index: 10;
     }
     .bg-note { display: block; font-size: 12px; margin-top: 5px; opacity: 0.6; }
 
@@ -107,6 +118,42 @@
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: background-color 0.3s, transform 0.3s; z-index: 100;
     }
     .music-btn:hover { background-color: #00ffcc; transform: scale(1.05); }
+    .music-btn:disabled { opacity: 0.6; cursor: wait; }
+
+    /* ========== ✅ 新增：自定义主题色调色盘 ========== */
+    .color-picker-wrap {
+      position: fixed;
+      bottom: 75px; /* 刚好在音乐按钮上方 */
+      right: 25px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background-color: var(--panel);
+      border: 1px solid var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: all 0.3s;
+    }
+    .color-picker-wrap:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px rgba(0,255,204,0.4);
+    }
+    .color-picker-wrap input[type="color"] {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .color-picker-icon {
+      font-size: 16px;
+      pointer-events: none;
+      color: var(--accent);
+    }
 
     /* ========== 右侧入口按钮 ========== */
     .projects {
@@ -133,9 +180,9 @@
 
     .essay-header {
       display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1); 
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       position: sticky; top: 0; z-index: 10;
-      margin: 0 -40px 30px -40px; padding: 40px 40px 20px 40px; background-color: #0a0a0a; 
+      margin: 0 -40px 30px -40px; padding: 40px 40px 20px 40px; background-color: #0a0a0a;
     }
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; }
 
@@ -192,7 +239,8 @@
     .essay-detail-view.is-open { display: flex; animation: fadeIn 0.25s ease both; }
 
     .detail-header {
-      position: sticky; top: 0; z-index: 10; padding: 30px 0 20px 0; margin: 0 -30px; padding-left: 30px; padding-right: 30px; background-color: #0a0a0a; 
+      position: sticky; top: 0; z-index: 10; padding: 30px 0 20px 0; margin: 0 -30px;
+      padding-left: 30px; padding-right: 30px; background-color: #0a0a0a;
     }
     .back-btn {
       background: rgba(0, 255, 204, 0.1); color: var(--accent); border: 1px solid var(--accent);
@@ -201,49 +249,66 @@
     .back-btn:hover { background: var(--accent); color: #000; }
 
     .detail-content { width: 100%; max-width: 700px; margin: 0 auto; padding-top: 20px; }
-    #detail-title { color: #fff; margin-top: 0; font-size: 28px; line-height: 1.4; word-break: break-word; }
-    .detail-body { color: #ddd; line-height: 2; font-size: 17px; margin-top: 30px; text-align: justify; word-wrap: break-word; }
+    #detail-title { color: #fff; margin-top: 0; font-size: 28px; line-height: 1.4; overflow-wrap: anywhere; }
+    .detail-body { color: #ddd; line-height: 2; font-size: 17px; margin-top: 30px; text-align: justify; overflow-wrap: break-word; }
 
     /* ========== 自我介绍正文 ========== */
-    .intro-body { color: #ddd; line-height: 2; font-size: 17px; text-align: justify; }
+    .intro-body { color: #ddd; line-height: 2; text-align: justify; }
+    .intro-body p { font-size: 17px; line-height: 2; }
+
+    /* ========== noscript 提示 ========== */
+    .noscript-warning {
+      position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+      background: rgba(255, 138, 128, 0.15); border: 1px solid #ff8a80; color: #ff8a80;
+      padding: 12px 24px; border-radius: 10px; z-index: 200;
+      font-size: 14px; max-width: 90vw; text-align: center;
+    }
 
     /* ========== 动画与滚动条 ========== */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    
+
     .essay-modal::-webkit-scrollbar, .essay-detail-view::-webkit-scrollbar { width: 8px; }
     .essay-modal::-webkit-scrollbar-thumb, .essay-detail-view::-webkit-scrollbar-thumb { background: rgba(0, 255, 204, 0.4); border-radius: 4px; }
-    
+
     .essay-modal, .essay-detail-view {
-      scrollbar-width: thin; 
-      scrollbar-color: rgba(0, 255, 204, 0.5) transparent; 
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 255, 204, 0.5) transparent;
     }
 
     /* ========== 移动端适配 ========== */
     @media (max-width: 820px) {
       body { overflow: auto; overflow-x: hidden; }
-      .content { position: relative; width: 100%; max-width: none; height: auto; min-height: 55vh; padding: 48px 24px; border-radius: 0 0 15px 15px; }
+      .content { position: relative; width: 100%; max-width: none; height: auto; min-height: 55vh; padding: 48px 24px; border-radius: 0 0 15px 15px; overflow: visible; }
       .intro-btn { align-self: center; }
-      
+
       .intro-actions { flex-direction: column; width: 100%; }
       .intro-actions .intro-btn { width: 100%; margin-top: 10px; }
 
       .projects { position: relative; top: auto; right: auto; transform: none; margin: 40px 24px 40px; }
       .project-btn { width: 100%; }
       .footer { position: relative; bottom: auto; padding: 0 20px 90px; }
-      
+
       .essay-modal { padding: 0 16px 24px 16px; }
       .essay-header { margin: 0 -16px 20px -16px; padding: 24px 16px 15px 16px; }
-      .essay-header h2 { font-size: 18px; } 
-      
+      .essay-header h2 { font-size: 18px; }
+
       .friend-link { flex-direction: column; align-items: flex-start; gap: 8px; }
       .friend-desc { text-align: left; margin-left: 0; }
-      
+
       .essay-detail-view { padding: 0 16px 20px 16px; }
-      .detail-header { padding: 20px 15px 15px 15px; margin: 0 -16px; }
+      .detail-header { padding: 20px 16px 15px 16px; margin: 0 -16px; }
+      
+      /* ✅ 移动端调色盘位置微调 */
+      .color-picker-wrap { bottom: 75px; right: 24px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ✅ 无 JS 提示 -->
+  <noscript>
+    <div class="noscript-warning">本站需要启用 JavaScript 才能加载随笔手记与友情链接。</div>
+  </noscript>
 
   <!-- 顶部 BGM 信息 -->
   <div class="top-info" id="bgm-info" aria-hidden="true">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
@@ -252,7 +317,7 @@
   <div class="content">
     <h1>欢迎回来！</h1>
     <p>该网站用于编程技能学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
-    
+
     <div class="intro-actions">
       <button id="open-intro" class="intro-btn" type="button">👤 关于开发者</button>
       <button id="open-links" class="intro-btn" type="button">🔗 友情链接</button>
@@ -274,7 +339,7 @@
       <div class="intro-body">
         <p>这里是XXXUAN的自我介绍……</p>
         <p>XXXUAN起初是我有一回心血来潮想当曲师的时候给自己起的艺名，后来就变成有关音乐、音游、编程以及数字技术的内容全署名XXXUAN了。<br>本人爱好有二次元、电子乐，以及会弹吉他；数学是本人的一生之敌（谁来救救孩子啊！）<br>本人作为二次元推的角色主要有纳西妲（原神）、宵崎奏＆東雲絵名（Project Sekai）、以及基沃托斯的学生们（Blue Archive），不知道在这能不能找到同好啊。<br><br></p>
-        <p>关于为什么要建这个站——<br>主要是为了参与社团活动，然而实际上心底也很希望可以有这样一个“赛博小窝”，记录和展现自己的个性、想法和创意，感觉后者应当占比更大一些；另外本人对编程虽然一窍不通但其实也很感兴趣。<br><br><br></p>
+        <p>关于为什么要建这个站——<br>主要是为了参与社团活动，然而实际上心底也很希望可以有这样一个“赛博小窝”，记录和展现自己的个性、想法和创意，感觉后者应当占比更大一些；另外本人在编程上虽然算是小白里的半吊子但其实也很感兴趣。<br><br><br></p>
         <p>联系开发者：<br>微信：XXXUAN-_-1006<br>邮箱：xiaoxuan101006@163.com</p>
       </div>
     </div>
@@ -283,15 +348,14 @@
   <!-- ========== 友情链接全屏弹窗 ========== -->
   <div id="links-modal" class="essay-modal" aria-hidden="true">
     <div class="essay-header">
-       <div class="modal-title-group">
-        <h2 class="modal-title">友情链接 - 通过Internet联系你我</h2>
+      <div class="modal-title-group">
+        <h2 class="modal-title">友情链接 - 通过Internet链接你我<br>                ——今夜，群星于此相拥</h2>
         <span class="modal-hint">💡 点击下方卡片以访问对应站点</span>
       </div>
       <button id="close-links" class="close-btn" type="button" aria-label="关闭">&times;</button>
     </div>
-    <!-- 👇 这里改成了动态容器，将由 JS 从 links.json 读取数据注入 👇 -->
+    <!-- 动态容器：由 JS 从 links.json 注入 -->
     <div class="essay-content essay-content--links" id="links-container">
-      <!-- 加载提示 -->
       <p class="essay-empty">正在获取站点列表...</p>
     </div>
   </div>
@@ -299,10 +363,12 @@
   <!-- ========== 随笔全屏画廊 ========== -->
   <div id="essay-modal" class="essay-modal" aria-hidden="true">
     <div class="essay-header">
-      <h2>XXXUAN随笔手记——这一刻想法&予你我的内心</h2>
+      <h2>XXXUAN随笔手记——这一刻想法&赠你我的内心，予我你的长夜</h2>
       <button id="close-essay" class="close-btn" type="button" aria-label="关闭随笔">&times;</button>
     </div>
-    <div class="essay-content" id="essay-list-container"></div>
+    <div class="essay-content" id="essay-list-container">
+      <p class="essay-empty">正在加载随笔...</p>
+    </div>
   </div>
 
   <!-- ========== 随笔详情页 ========== -->
@@ -330,6 +396,12 @@
   </audio>
   <button id="music-btn" class="music-btn" type="button" aria-pressed="false">▶ ２５時の旋律</button>
 
+  <!-- ✅ 新增：自定义主题色调色盘 -->
+  <div class="color-picker-wrap" title="自定义主题色">
+    <input type="color" id="theme-color-picker" value="#00ffcc">
+    <span class="color-picker-icon">🎨</span>
+  </div>
+
   <script>
     (() => {
       'use strict';
@@ -341,6 +413,7 @@
       const musicBtn = document.getElementById('music-btn');
       const bgmInfo = document.getElementById('bgm-info');
       const BGM_TEXT = 'BGM：25時の情熱Inst. -カンザキイオリ ©SEGA';
+      let bgmToggling = false;
 
       function setBgmUI(playing) {
         musicBtn.textContent = playing ? '⏸ 夜幕の静謐' : '▶ ２５時の旋律';
@@ -350,8 +423,15 @@
       }
 
       musicBtn.addEventListener('click', async () => {
-        if (!bgm.paused) { bgm.pause(); setBgmUI(false); return; }
+        if (bgmToggling) return;
+        bgmToggling = true;
+        musicBtn.disabled = true;
         try {
+          if (!bgm.paused) {
+            bgm.pause();
+            setBgmUI(false);
+            return;
+          }
           await bgm.play();
           setBgmUI(true);
         } catch (err) {
@@ -359,15 +439,92 @@
           bgmInfo.textContent = '音频加载失败，请检查音频文件是否存在';
           bgmInfo.classList.add('show');
           bgmInfo.setAttribute('aria-hidden', 'false');
-          setTimeout(() => { bgmInfo.textContent = BGM_TEXT; bgmInfo.classList.remove('show'); bgmInfo.setAttribute('aria-hidden', 'true'); }, 3000);
+          setTimeout(() => {
+            bgmInfo.textContent = BGM_TEXT;
+            bgmInfo.classList.remove('show');
+            bgmInfo.setAttribute('aria-hidden', 'true');
+          }, 3000);
+        } finally {
+          bgmToggling = false;
+          musicBtn.disabled = false;
         }
       });
 
       /* ============================================================
-         二、随笔模块
+         二、通用工具
          ============================================================ */
+      const escapeHtml = (str) => String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+      const renderRichText = (text) => escapeHtml(text)
+        .replace(/&lt;br\s*\/?&gt;/gi, '<br>')
+        .replace(/\r\n?|\n/g, '<br>');
+
+      function normalizeUrl(raw) {
+        if (typeof raw !== 'string' || !raw.trim()) return null;
+        try {
+          const u = new URL(raw.trim(), location.href);
+          if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+          return u.href;
+        } catch {
+          return null;
+        }
+      }
+
+      /* ============================================================
+         三、弹窗统一管理
+         ============================================================ */
+      const introModal = document.getElementById('intro-modal');
+      const linksModal = document.getElementById('links-modal');
       const essayModal = document.getElementById('essay-modal');
       const detailView = document.getElementById('essay-detail-view');
+      const pageRegions = [
+        document.querySelector('.content'),
+        document.querySelector('.projects'),
+        document.querySelector('.music-btn'),
+        document.querySelector('.color-picker-wrap') // ✅ 顺便把调色盘也纳入背景禁用区域
+      ].filter(Boolean);
+
+      function syncPageState() {
+        const detailOpen = detailView.classList.contains('is-open');
+        const anyOpen = [introModal, linksModal, essayModal, detailView]
+          .some(el => el.classList.contains('is-open'));
+        pageRegions.forEach(el => { el.inert = anyOpen; });
+        essayModal.inert = detailOpen;
+        document.body.classList.toggle('modal-open', anyOpen);
+      }
+
+      function openModalEl(modal, trigger) {
+        modal._lastTrigger = trigger || document.activeElement;
+        modal.classList.add('is-open');
+        modal.setAttribute('aria-hidden', 'false');
+        syncPageState();
+        requestAnimationFrame(() => {
+          modal.scrollTop = 0;
+          const target = modal.querySelector('.close-btn, .back-btn')
+            || modal.querySelector('button, [href], [tabindex]:not([tabindex="-1"])');
+          target?.focus({ preventScroll: true });
+        });
+      }
+
+      function closeModalEl(modal) {
+        if (!modal.classList.contains('is-open')) return;
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        syncPageState();
+        const t = modal._lastTrigger;
+        if (t && document.contains(t) && typeof t.focus === 'function') {
+          t.focus({ preventScroll: true });
+        }
+      }
+
+      /* ============================================================
+         四、随笔模块
+         ============================================================ */
       const listContainer = document.getElementById('essay-list-container');
       const detailTitle = document.getElementById('detail-title');
       const detailDate = document.getElementById('detail-date');
@@ -375,32 +532,41 @@
       const backBtn = detailView.querySelector('.back-btn');
       let essaysData = [];
 
-      const escapeHtml = (str) => String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-      const renderRichText = (text) => escapeHtml(text).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r?\n/g, '<br>');
-
-      function openEssayDetail(index) {
+      function openEssayDetail(index, triggerEl) {
         const essay = essaysData[index];
         if (!essay) return;
         detailTitle.textContent = essay.title || '无标题';
         detailDate.textContent = essay.date || '';
         detailBody.innerHTML = renderRichText(essay.content);
-        
-        detailView.scrollTop = 0; 
+
+        detailView._lastTrigger = triggerEl || document.activeElement;
         detailView.classList.add('is-open');
         detailView.setAttribute('aria-hidden', 'false');
-        requestAnimationFrame(() => backBtn.focus({ preventScroll: true }));
+        syncPageState();
+        requestAnimationFrame(() => {
+          detailView.scrollTop = 0;
+          backBtn.focus({ preventScroll: true });
+        });
       }
 
       function closeEssayDetail() {
         if (!detailView.classList.contains('is-open')) return;
         detailView.classList.remove('is-open');
         detailView.setAttribute('aria-hidden', 'true');
+        syncPageState();
+        const t = detailView._lastTrigger;
+        if (t && essayModal.classList.contains('is-open') && document.contains(t)) {
+          t.focus({ preventScroll: true });
+        }
       }
 
       function renderEssays() {
         listContainer.innerHTML = '';
         if (!essaysData.length) {
-          listContainer.innerHTML = '<p class="essay-empty">这里还空空如也……</p>';
+          const p = document.createElement('p');
+          p.className = 'essay-empty';
+          p.textContent = '这里还空空如也……';
+          listContainer.appendChild(p);
           return;
         }
         const frag = document.createDocumentFragment();
@@ -413,8 +579,13 @@
           const date = document.createElement('span'); date.className = 'essay-date'; date.textContent = essay.date || '';
           const p = document.createElement('p'); p.textContent = essay.summary || '';
           card.append(h3, date, p);
-          card.addEventListener('click', () => openEssayDetail(index));
-          card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEssayDetail(index); } });
+          card.addEventListener('click', () => openEssayDetail(index, card));
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openEssayDetail(index, card);
+            }
+          });
           frag.appendChild(card);
         });
         listContainer.appendChild(frag);
@@ -427,7 +598,7 @@
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
           if (!Array.isArray(data)) throw new Error('JSON 顶层必须是数组');
-          essaysData = data.filter((item) => item && typeof item === 'object');
+          essaysData = data.filter(item => item && typeof item === 'object');
           renderEssays();
         } catch (err) {
           console.error('加载随笔失败：', err);
@@ -440,7 +611,7 @@
       }
 
       /* ============================================================
-         三、友情链接模块 (新增动态渲染)
+         五、友情链接模块
          ============================================================ */
       const linksContainer = document.getElementById('links-container');
 
@@ -450,86 +621,114 @@
           const res = await fetch('links.json', { cache: 'no-cache' });
           if (!res.ok) throw new Error(`HTTP ${res.status}`);
           const data = await res.json();
-          
-          linksContainer.innerHTML = ''; 
-          
+
+          linksContainer.innerHTML = '';
+
           if (!Array.isArray(data) || data.length === 0) {
-            linksContainer.innerHTML = '<p class="essay-empty">这里还空空如也……</p>';
+            const p = document.createElement('p');
+            p.className = 'essay-empty';
+            p.textContent = '这里还空空如也……';
+            linksContainer.appendChild(p);
             return;
           }
 
           const frag = document.createDocumentFragment();
-          
-          data.forEach(link => {
+
+          data.forEach((link) => {
             if (!link || typeof link !== 'object') return;
-            
+
+            const safeUrl = normalizeUrl(link.url);
+            if (!safeUrl) return;
+
             const a = document.createElement('a');
-            a.href = link.url || '#';
+            a.href = safeUrl;
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
             a.className = 'friend-link';
-            
+
             const nameSpan = document.createElement('span');
             nameSpan.className = 'friend-name';
             nameSpan.textContent = link.name || '未命名站点';
-            
+
             const descSpan = document.createElement('span');
             descSpan.className = 'friend-desc';
-            descSpan.innerHTML = `${link.desc || ''} &rarr;`;
-            
+            descSpan.textContent = `${link.desc || ''} →`;
+
             a.append(nameSpan, descSpan);
             frag.appendChild(a);
           });
+
+          if (!frag.childNodes.length) {
+            const p = document.createElement('p');
+            p.className = 'essay-empty';
+            p.textContent = '这里还空空如也……';
+            linksContainer.appendChild(p);
+            return;
+          }
           linksContainer.appendChild(frag);
 
         } catch (err) {
           console.error('加载友链失败：', err);
-          linksContainer.innerHTML = `<p class="essay-error">友链数据加载失败：${err.message}</p>`;
+          linksContainer.innerHTML = '';
+          const p = document.createElement('p');
+          p.className = 'essay-error';
+          p.textContent = `友链数据加载失败：${err.message}`;
+          linksContainer.appendChild(p);
         }
       }
 
       /* ============================================================
-         四、UI 交互控制
+         六、UI 交互
          ============================================================ */
-      const introModal = document.getElementById('intro-modal');
-      const linksModal = document.getElementById('links-modal');
-
-      document.getElementById('open-essays').addEventListener('click', () => {
-        essayModal.classList.add('is-open'); essayModal.setAttribute('aria-hidden', 'false'); essayModal.scrollTop = 0;
+      document.getElementById('open-essays').addEventListener('click', (e) => {
+        openModalEl(essayModal, e.currentTarget);
       });
       document.getElementById('close-essay').addEventListener('click', () => {
-        essayModal.classList.remove('is-open'); essayModal.setAttribute('aria-hidden', 'true'); closeEssayDetail();
+        if (detailView.classList.contains('is-open')) closeEssayDetail();
+        closeModalEl(essayModal);
       });
       backBtn.addEventListener('click', closeEssayDetail);
 
-      document.getElementById('open-intro').addEventListener('click', () => {
-        introModal.classList.add('is-open'); introModal.setAttribute('aria-hidden', 'false'); introModal.scrollTop = 0;
+      document.getElementById('open-intro').addEventListener('click', (e) => {
+        openModalEl(introModal, e.currentTarget);
       });
-      document.getElementById('close-intro').addEventListener('click', () => {
-        introModal.classList.remove('is-open'); introModal.setAttribute('aria-hidden', 'true');
-      });
+      document.getElementById('close-intro').addEventListener('click', () => closeModalEl(introModal));
 
-      document.getElementById('open-links').addEventListener('click', () => {
-        linksModal.classList.add('is-open'); linksModal.setAttribute('aria-hidden', 'false'); linksModal.scrollTop = 0;
+      document.getElementById('open-links').addEventListener('click', (e) => {
+        openModalEl(linksModal, e.currentTarget);
       });
-      document.getElementById('close-links').addEventListener('click', () => {
-        linksModal.classList.remove('is-open'); linksModal.setAttribute('aria-hidden', 'true');
-      });
+      document.getElementById('close-links').addEventListener('click', () => closeModalEl(linksModal));
 
       document.addEventListener('keydown', (e) => {
         if (e.key !== 'Escape') return;
         if (detailView.classList.contains('is-open')) {
           closeEssayDetail();
         } else if (essayModal.classList.contains('is-open')) {
-          essayModal.classList.remove('is-open'); essayModal.setAttribute('aria-hidden', 'true');
+          closeModalEl(essayModal);
         } else if (introModal.classList.contains('is-open')) {
-          introModal.classList.remove('is-open'); introModal.setAttribute('aria-hidden', 'true');
+          closeModalEl(introModal);
         } else if (linksModal.classList.contains('is-open')) {
-          linksModal.classList.remove('is-open'); linksModal.setAttribute('aria-hidden', 'true');
+          closeModalEl(linksModal);
         }
       });
 
-      // 启动加载
+      /* ============================================================
+         七、✅ 新增：自定义主题色模块
+         ============================================================ */
+      const colorPicker = document.getElementById('theme-color-picker');
+      const savedColor = localStorage.getItem('archive-theme-color');
+      if (savedColor) {
+        document.documentElement.style.setProperty('--accent', savedColor);
+        colorPicker.value = savedColor;
+      }
+
+      colorPicker.addEventListener('input', (e) => {
+        const newColor = e.target.value;
+        document.documentElement.style.setProperty('--accent', newColor);
+        localStorage.setItem('archive-theme-color', newColor);
+      });
+
+      // 启动
       loadEssays();
       loadLinks();
     })();
