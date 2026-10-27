@@ -21,11 +21,7 @@
     body {
       min-height: 100%;
       margin: 0;
-      background-image: url('NahidaBG.webp');
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
-      background-color: #0a0f12;
+      background: #0a0f12 url('NahidaBG.webp') no-repeat center center / cover fixed;
       color: #fff;
       font-family: var(--font-sans);
       overflow: hidden;
@@ -46,7 +42,6 @@
       text-align: left; overflow-y: auto; overscroll-behavior: contain;
     }
 
-    /* 👇 新增：30小时制时钟样式 */
     .cyber-clock {
       margin-bottom: 25px;
       font-family: 'Courier New', Courier, monospace;
@@ -54,24 +49,11 @@
       padding-left: 12px;
     }
     .clock-time {
-      font-size: 32px;
-      font-weight: bold;
-      color: var(--accent);
-      text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5);
-      letter-spacing: 2px;
+      font-size: 32px; font-weight: bold; color: var(--accent);
+      text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.5); letter-spacing: 2px;
     }
-    .clock-date {
-      font-size: 14px;
-      color: #ddd;
-      margin-top: 4px;
-      margin-bottom: 6px;
-      letter-spacing: 1px;
-    }
-    .clock-text {
-      font-size: 13px;
-      color: #aaa;
-      letter-spacing: 1px;
-    }
+    .clock-date { font-size: 14px; color: #ddd; margin-top: 4px; margin-bottom: 6px; letter-spacing: 1px; }
+    .clock-text { font-size: 13px; color: #aaa; letter-spacing: 1px; }
 
     h1 { color: var(--accent); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); margin-top: 0; }
     p { color: #fff; font-size: 18px; line-height: 1.6; }
@@ -80,15 +62,13 @@
     .intro-btn {
       margin-top: 30px; align-self: flex-start; padding: 10px 24px;
       background-color: transparent; color: var(--accent); border: 1px solid var(--accent);
-      border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer;
+      transition: all 0.3s ease;
     }
     .intro-btn:hover {
       background-color: var(--accent); color: #000;
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
-
     .intro-actions { display: flex; gap: 15px; margin-top: 30px; align-self: flex-start; }
     .intro-actions .intro-btn { margin-top: 0; }
 
@@ -99,8 +79,7 @@
       border-radius: 10px; font-size: 14px; line-height: 1.5;
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       opacity: 0; visibility: hidden; transform: translateY(-8px);
-      transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s;
-      pointer-events: none; z-index: 50;
+      transition: all 0.4s ease; pointer-events: none; z-index: 50;
     }
     .top-info.show { opacity: 1; visibility: visible; transform: translateY(0); }
 
@@ -117,7 +96,7 @@
       position: fixed; bottom: 20px; right: 20px; padding: 10px 20px;
       background-color: rgba(var(--accent-rgb), 0.8); color: #1e1e1e;
       border: none; border-radius: 30px; font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: background-color 0.3s, transform 0.3s; z-index: 100;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); transition: all 0.3s; z-index: 100;
     }
     .music-btn:hover { background-color: var(--accent); transform: scale(1.05); }
     .music-btn:disabled { opacity: 0.6; cursor: wait; }
@@ -126,7 +105,7 @@
       position: fixed; bottom: 75px; right: 25px; width: 32px; height: 32px;
       border-radius: 50%; background-color: var(--panel); border: 1px solid var(--accent);
       display: flex; align-items: center; justify-content: center;
-      cursor: pointer; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.3); transition: all 0.3s;
     }
     .color-picker-wrap:hover { transform: scale(1.1); box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4); }
     .color-picker-wrap:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
@@ -141,53 +120,47 @@
     .project-btn {
       background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       padding: 15px 30px; border-radius: 10px; color: var(--accent); border: 1px solid var(--accent);
-      font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer;
-      transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+      font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s;
     }
     .project-btn:hover {
       background-color: rgba(var(--accent-rgb), 0.2); transform: scale(1.05); box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
 
     /* ============================================================
-       👇 终极重构：弹窗采用 Flex 布局 + 独立滚动区，完美解决毛玻璃失效
+       终极终极版：全屏滚动 + 纯血统 Sticky Header
        ============================================================ */
     
-    /* 弹窗大外壳：禁止滚动，只做毛玻璃背景 */
     .essay-modal {
       display: none; position: fixed; inset: 0; 
-      background-color: rgba(10, 10, 10, 0.45);
-      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); 
+      /* 👇 放弃大外壳的毛玻璃，改用深色半透明，彻底解放子元素的渲染限制 */
+      background-color: rgba(10, 10, 10, 0.7);
       z-index: 900;
-      flex-direction: column; 
-      overflow: hidden; /* 关键：大外壳不滚动 */
+      /* 👇 整个大外壳负责滚动 */
+      overflow-y: auto; 
+      overscroll-behavior: contain;
     }
-    .essay-modal.is-open { display: flex; animation: fadeIn 0.3s ease both; }
+    .essay-modal.is-open { display: block; animation: fadeIn 0.3s ease both; }
 
-    /* 顶部栏：再也不用 sticky 了，它现在就是固定的 */
+    /* 👇 顶部栏：吸顶 + 毛玻璃！现在文字会在它背后滑过，完美模糊！ */
     .essay-header {
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      flex-shrink: 0; /* 防止被压缩 */
-      padding: 40px 40px 20px 40px;
-      background-color: rgba(10, 10, 10, 0.65); 
-      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); /* 完美生效！ */
-      z-index: 10;
+      position: sticky; top: 0; z-index: 10;
+      padding: 30px 40px 20px 40px;
+      background-color: rgba(10, 10, 10, 0.4); /* 透明度越低，毛玻璃越透 */
+      backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
     }
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; overflow-wrap: anywhere; }
 
     .close-btn {
       background: none; border: none; padding: 0; line-height: 1; color: var(--accent);
-      font-size: 35px; font-family: inherit; cursor: pointer; transition: color 0.3s, transform 0.3s;
-      flex-shrink: 0;
+      font-size: 35px; font-family: inherit; cursor: pointer; transition: all 0.3s; flex-shrink: 0;
     }
     .close-btn:hover { color: #fff; transform: rotate(90deg); }
 
-    /* 独立滚动区：把原本大外壳的 padding 转移到这里 */
+    /* 👇 内容区：正常排版，只需留出内边距 */
     .modal-scroll-body {
-      flex: 1;
-      overflow-y: auto; 
-      overscroll-behavior: contain;
-      padding: 0 40px 40px 40px; /* 底部留点空隙 */
+      padding: 10px 40px 40px 40px;
     }
 
     /* ========== 随笔与友链模块 ========== */
@@ -198,20 +171,13 @@
     .essay-card {
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(var(--accent-rgb), 0.3);
-      padding: 25px; border-radius: 15px; cursor: pointer;
-      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+      padding: 25px; border-radius: 15px; cursor: pointer; transition: all 0.3s;
     }
-    .essay-card:hover,
-    .essay-card:focus-visible {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: var(--accent);
-      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
-      transform: translateY(-5px);
+    .essay-card:hover, .essay-card:focus-visible {
+      background: rgba(255, 255, 255, 0.1); border-color: var(--accent);
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2); transform: translateY(-5px);
     }
-    .essay-card:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 3px;
-    }
+    .essay-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .essay-card h3 { color: #fff; margin: 0 0 8px; font-size: 20px; }
     .essay-date { display: block; color: #888; font-size: 13px; margin-bottom: 15px; }
     .essay-card p { color: #ccc; line-height: 1.8; margin: 0; font-size: 16px; }
@@ -221,8 +187,7 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 20px 25px; background: rgba(255, 255, 255, 0.05);
       border: 1px solid rgba(var(--accent-rgb), 0.3);
-      border-radius: 15px; color: #fff; text-decoration: none;
-      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      border-radius: 15px; color: #fff; text-decoration: none; transition: all 0.3s;
     }
     .friend-link:hover {
       background: rgba(255, 255, 255, 0.1); border-color: var(--accent);
@@ -240,38 +205,28 @@
     .essay-empty, .essay-error { color: #888; text-align: center; font-size: 16px; padding: 40px 0; margin: 0; }
     .essay-error { color: #ff8a80; }
 
-    /* ========== 随笔详情页（同步采用 Flex 隔离法） ========== */
+    /* ========== 随笔详情页（同样改用全屏滚动 + sticky） ========== */
     .essay-detail-view {
       display: none; position: fixed; inset: 0; 
-      background-color: rgba(10, 10, 10, 0.45);
-      backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-      flex-direction: column; 
-      overflow: hidden; /* 外壳不滚动 */
-      z-index: 1000;
+      background-color: rgba(10, 10, 10, 0.7);
+      overflow-y: auto; overscroll-behavior: contain; z-index: 1000;
     }
-    .essay-detail-view.is-open { display: flex; animation: fadeIn 0.25s ease both; }
+    .essay-detail-view.is-open { display: block; animation: fadeIn 0.25s ease both; }
 
     .detail-header {
-      flex-shrink: 0;
-      padding: 30px 30px 20px 30px;
-      background-color: rgba(10, 10, 10, 0.65);
+      position: sticky; top: 0; z-index: 10;
+      padding: 20px 30px;
+      background-color: rgba(10, 10, 10, 0.4);
       backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
-      z-index: 10;
     }
     .back-btn {
-      background: rgba(var(--accent-rgb), 0.1);
-      color: var(--accent); border: 1px solid var(--accent);
-      padding: 10px 20px; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer;
-      transition: background-color 0.3s, color 0.3s;
+      background: rgba(var(--accent-rgb), 0.1); color: var(--accent); border: 1px solid var(--accent);
+      padding: 10px 20px; border-radius: 8px; font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s;
     }
     .back-btn:hover { background: var(--accent); color: #000; }
 
-    /* 详情页独立滚动区 */
     .detail-scroll-body {
-      flex: 1;
-      overflow-y: auto;
-      overscroll-behavior: contain;
-      padding: 0 30px 30px 30px;
+      padding: 10px 30px 30px 30px;
     }
 
     .detail-content { width: 100%; max-width: 700px; margin: 0 auto; padding-top: 20px; }
@@ -286,20 +241,18 @@
     .noscript-warning {
       position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
       background: rgba(255, 138, 128, 0.15); border: 1px solid #ff8a80; color: #ff8a80;
-      padding: 12px 24px; border-radius: 10px; z-index: 200;
-      font-size: 14px; max-width: 90vw; text-align: center;
+      padding: 12px 24px; border-radius: 10px; z-index: 200; font-size: 14px; text-align: center;
     }
 
     /* ========== 动画与滚动条 ========== */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .modal-scroll-body::-webkit-scrollbar, .detail-scroll-body::-webkit-scrollbar { width: 8px; }
-    .modal-scroll-body::-webkit-scrollbar-thumb, .detail-scroll-body::-webkit-scrollbar-thumb {
+    .essay-modal::-webkit-scrollbar, .essay-detail-view::-webkit-scrollbar { width: 8px; }
+    .essay-modal::-webkit-scrollbar-thumb, .essay-detail-view::-webkit-scrollbar-thumb {
       background: rgba(var(--accent-rgb), 0.4); border-radius: 4px;
     }
-    .modal-scroll-body, .detail-scroll-body {
-      scrollbar-width: thin;
-      scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
+    .essay-modal, .essay-detail-view {
+      scrollbar-width: thin; scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
     }
 
     /* ========== 移动端适配 ========== */
@@ -322,7 +275,7 @@
       .friend-link { flex-direction: column; align-items: flex-start; gap: 8px; }
       .friend-desc { text-align: left; margin-left: 0; }
       
-      .detail-header { padding: 20px 16px 15px 16px; }
+      .detail-header { padding: 15px 16px; }
       .detail-scroll-body { padding: 0 16px 20px 16px; }
       .color-picker-wrap { bottom: 75px; right: 24px; }
     }
@@ -337,7 +290,6 @@
   <div class="top-info" id="bgm-info" aria-hidden="true">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
 
   <div class="content">
-    <!-- 赛博时钟 -->
     <div class="cyber-clock">
       <div class="clock-time" id="clock-time">00:00:00</div>
       <div class="clock-date" id="clock-date">加载中...</div>
@@ -356,7 +308,6 @@
     <button id="open-essays" class="project-btn" type="button">📝 随笔手记</button>
   </div>
 
-  <!-- ========== 弹窗结构重构 ========== -->
   <div id="intro-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-hidden="true">
     <div class="essay-header">
       <h2 id="intro-title">关于XXXUAN（我）</h2>
@@ -438,7 +389,7 @@
       'use strict';
 
       /* ============================================================
-         一、30小时制时钟逻辑（递归 setTimeout + 整秒对齐）
+         一、30小时制时钟逻辑
          ============================================================ */
       const clockTimeEl = document.getElementById('clock-time');
       const clockDateEl = document.getElementById('clock-date');
@@ -487,7 +438,6 @@
 
       function scheduleNextClockTick() {
         if (clockTimer) clearTimeout(clockTimer);
-        // 对齐到下一个整秒：从现在到下一个整秒还剩多少毫秒
         const delay = 1000 - (Date.now() % 1000);
         clockTimer = setTimeout(() => {
           updateClock();
@@ -500,7 +450,6 @@
         scheduleNextClockTick();
       }
 
-      // 从后台切回前台时立即校准一次，避免被节流后显示滞后
       document.addEventListener('visibilitychange', () => {
         if (!document.hidden) startClock();
       });
@@ -638,8 +587,7 @@
         modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
         syncPageState();
         requestAnimationFrame(() => {
-          const scrollBody = modal.querySelector('.modal-scroll-body');
-          if(scrollBody) scrollBody.scrollTop = 0;
+          modal.scrollTop = 0; // 大外壳自己滚
           const target = modal.querySelector('.close-btn, .back-btn') || modal.querySelector('button, [href], [tabindex]:not([tabindex="-1"])');
           target?.focus({ preventScroll: true });
         });
@@ -661,7 +609,6 @@
       const detailDate = document.getElementById('detail-date');
       const detailBody = document.getElementById('detail-body');
       const backBtn = detailView.querySelector('.back-btn');
-      const detailScrollBody = detailView.querySelector('.detail-scroll-body');
       let essaysData = [];
 
       function openEssayDetail(index, triggerEl) {
@@ -674,7 +621,7 @@
         detailView.classList.add('is-open'); detailView.setAttribute('aria-hidden', 'false');
         syncPageState();
         requestAnimationFrame(() => { 
-          detailScrollBody.scrollTop = 0; 
+          detailView.scrollTop = 0; // 大外壳自己滚
           backBtn.focus({ preventScroll: true }); 
         });
       }
