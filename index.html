@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="XXXUAN 的赛博小窝 — 编程学习、随笔手记、音乐分享与友情链接。">
+  <meta name="theme-color" content="#00ffcc">
   <title>XXXUAN-Archive</title>
   <link rel="preload" as="image" href="NahidaBG.webp">
   <style>
@@ -27,6 +28,8 @@
       overflow: hidden;
     }
 
+    /* 桌面端 body 本来就 hidden，这条无副作用；
+       移动端通过媒体查询叠加 position: fixed 锁滚动 */
     body.modal-open { overflow: hidden; }
 
     /* ========== 左侧主体 ========== */
@@ -126,28 +129,45 @@
       background-color: rgba(var(--accent-rgb), 0.2); transform: scale(1.05); box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
 
+    /* ========== 通用 focus-visible ========== */
+    .music-btn:focus-visible,
+    .project-btn:focus-visible,
+    .intro-btn:focus-visible,
+    .close-btn:focus-visible,
+    .back-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
     /* ============================================================
-       终极终极版：全屏滚动 + 纯血统 Sticky Header
+       弹窗外壳：backdrop-filter 抽到伪元素，滚动层无模糊重绘
        ============================================================ */
-    
     .essay-modal {
-      display: none; position: fixed; inset: 0; 
-      /* 👇 放弃大外壳的毛玻璃，改用深色半透明，彻底解放子元素的渲染限制 */
-      background-color: rgba(10, 10, 10, 0.7);
+      display: none; position: fixed; inset: 0;
+      background: transparent;
       z-index: 900;
-      /* 👇 整个大外壳负责滚动 */
-      overflow-y: auto; 
+      overflow-y: auto;
       overscroll-behavior: contain;
+    }
+    .essay-modal::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-color: rgba(10, 10, 10, 0.45);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      pointer-events: none;
+      z-index: -1;
     }
     .essay-modal.is-open { display: block; animation: fadeIn 0.3s ease both; }
 
-    /* 👇 顶部栏：吸顶 + 毛玻璃！现在文字会在它背后滑过，完美模糊！ */
+    /* 顶部栏：吸顶 + 毛玻璃 */
     .essay-header {
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       position: sticky; top: 0; z-index: 10;
       padding: 30px 40px 20px 40px;
-      background-color: rgba(10, 10, 10, 0.4); /* 透明度越低，毛玻璃越透 */
+      background-color: rgba(10, 10, 10, 0.4);
       backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
     }
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; overflow-wrap: anywhere; }
@@ -158,7 +178,6 @@
     }
     .close-btn:hover { color: #fff; transform: rotate(90deg); }
 
-    /* 👇 内容区：正常排版，只需留出内边距 */
     .modal-scroll-body {
       padding: 10px 40px 40px 40px;
     }
@@ -189,10 +208,11 @@
       border: 1px solid rgba(var(--accent-rgb), 0.3);
       border-radius: 15px; color: #fff; text-decoration: none; transition: all 0.3s;
     }
-    .friend-link:hover {
+    .friend-link:hover, .friend-link:focus-visible {
       background: rgba(255, 255, 255, 0.1); border-color: var(--accent);
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2); transform: translateY(-3px);
     }
+    .friend-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     .friend-name { font-size: 18px; font-weight: bold; color: var(--accent); }
     .friend-desc { font-size: 14px; color: #ccc; text-align: right; margin-left: 20px; }
 
@@ -205,11 +225,21 @@
     .essay-empty, .essay-error { color: #888; text-align: center; font-size: 16px; padding: 40px 0; margin: 0; }
     .essay-error { color: #ff8a80; }
 
-    /* ========== 随笔详情页（同样改用全屏滚动 + sticky） ========== */
+    /* ========== 随笔详情页（同样拆层） ========== */
     .essay-detail-view {
-      display: none; position: fixed; inset: 0; 
-      background-color: rgba(10, 10, 10, 0.7);
+      display: none; position: fixed; inset: 0;
+      background: transparent;
       overflow-y: auto; overscroll-behavior: contain; z-index: 1000;
+    }
+    .essay-detail-view::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-color: rgba(10, 10, 10, 0.45);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      pointer-events: none;
+      z-index: -1;
     }
     .essay-detail-view.is-open { display: block; animation: fadeIn 0.25s ease both; }
 
@@ -258,6 +288,16 @@
     /* ========== 移动端适配 ========== */
     @media (max-width: 820px) {
       body { overflow: auto; overflow-x: hidden; background-attachment: scroll; }
+
+      /* 移动端滚动锁：fixed + top 由 JS 写入，保留滚动位置 */
+      body.modal-open {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
       .content { position: relative; width: 100%; max-width: none; height: auto; min-height: 55vh; padding: 48px 24px; border-radius: 0 0 15px 15px; overflow: visible; }
       .cyber-clock { text-align: center; border-left: none; padding-left: 0; }
       .clock-time { font-size: 26px; }
@@ -267,14 +307,14 @@
       .projects { position: relative; top: auto; right: auto; transform: none; margin: 40px 24px 40px; }
       .project-btn { width: 100%; }
       .footer { position: relative; bottom: auto; padding: 0 20px 90px; }
-      
+
       .essay-header { padding: 24px 16px 15px 16px; }
       .essay-header h2 { font-size: 18px; }
       .modal-scroll-body { padding: 0 16px 24px 16px; }
-      
+
       .friend-link { flex-direction: column; align-items: flex-start; gap: 8px; }
       .friend-desc { text-align: left; margin-left: 0; }
-      
+
       .detail-header { padding: 15px 16px; }
       .detail-scroll-body { padding: 0 16px 20px 16px; }
       .color-picker-wrap { bottom: 75px; right: 24px; }
@@ -287,7 +327,7 @@
     <div class="noscript-warning">本站需要启用 JavaScript 才能加载随笔手记与友情链接。</div>
   </noscript>
 
-  <div class="top-info" id="bgm-info" aria-hidden="true">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
+  <div class="top-info" id="bgm-info" role="status" aria-live="polite" aria-hidden="true">BGM：25時の情熱Inst. -カンザキイオリ ©SEGA</div>
 
   <div class="content">
     <div class="cyber-clock">
@@ -419,16 +459,16 @@
         if (h < 6) {
           displayDate.setDate(displayDate.getDate() - 1);
         }
-        
+
         const year = displayDate.getFullYear();
         const month = displayDate.getMonth() + 1;
         const date = displayDate.getDate();
         const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         const dayOfWeek = days[displayDate.getDay()];
-        
+
         const dateStr = `${year}年${month}月${date}日 ${dayOfWeek}`;
         const timeStr = `${String(displayH).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
-        
+
         clockTimeEl.textContent = timeStr;
         clockDateEl.textContent = dateStr;
         clockTextEl.textContent = text;
@@ -457,34 +497,49 @@
       startClock();
 
       /* ============================================================
-         二、BGM 控制
+         二、BGM 控制（UI 由 play / pause 事件驱动）
          ============================================================ */
       const bgm = document.getElementById('bgm');
       const musicBtn = document.getElementById('music-btn');
       const bgmInfo = document.getElementById('bgm-info');
       const BGM_TEXT = 'BGM：25時の情熱Inst. -カンザキイオリ ©SEGA';
       let bgmToggling = false;
+      let bgmErrorTimer = null;
 
       function setBgmUI(playing) {
         musicBtn.textContent = playing ? '⏸ 夜幕の静謐' : '▶ ２５時の旋律';
         musicBtn.setAttribute('aria-pressed', String(playing));
-        bgmInfo.classList.toggle('show', playing);
-        bgmInfo.setAttribute('aria-hidden', String(!playing));
+        if (playing) {
+          if (bgmErrorTimer) { clearTimeout(bgmErrorTimer); bgmErrorTimer = null; }
+          bgmInfo.textContent = BGM_TEXT;
+          bgmInfo.classList.add('show');
+          bgmInfo.setAttribute('aria-hidden', 'false');
+        } else {
+          // 错误提示还在倒计时的话，让计时器自己收尾
+          if (!bgmErrorTimer) {
+            bgmInfo.classList.remove('show');
+            bgmInfo.setAttribute('aria-hidden', 'true');
+          }
+        }
       }
 
-      let bgmErrorTimer = null;
       function showBgmError() {
         if (bgmErrorTimer) clearTimeout(bgmErrorTimer);
-        bgmInfo.textContent = '音频加载失败，请检查音频文件是否存在';
+        bgmInfo.textContent = '音频加载失败，请检查网络后重试';
         bgmInfo.classList.add('show');
         bgmInfo.setAttribute('aria-hidden', 'false');
         bgmErrorTimer = setTimeout(() => {
-          bgmInfo.textContent = BGM_TEXT;
-          bgmInfo.classList.remove('show');
-          bgmInfo.setAttribute('aria-hidden', 'true');
           bgmErrorTimer = null;
+          if (bgm.paused) {
+            bgmInfo.textContent = BGM_TEXT;
+            bgmInfo.classList.remove('show');
+            bgmInfo.setAttribute('aria-hidden', 'true');
+          }
         }, 3000);
       }
+
+      bgm.addEventListener('play', () => setBgmUI(true));
+      bgm.addEventListener('pause', () => setBgmUI(false));
 
       bgm.addEventListener('error', () => {
         console.error('BGM 播放出错');
@@ -497,10 +552,11 @@
         bgmToggling = true;
         musicBtn.disabled = true;
         try {
-          if (!bgm.paused) { bgm.pause(); setBgmUI(false); return; }
-          await bgm.play(); setBgmUI(true);
+          if (!bgm.paused) { bgm.pause(); return; }
+          await bgm.play();
         } catch (err) {
           console.error('BGM 播放失败：', err);
+          setBgmUI(false);
           showBgmError();
         } finally {
           bgmToggling = false; musicBtn.disabled = false;
@@ -522,8 +578,23 @@
         } catch { return null; }
       }
 
+      async function fetchJson(url) {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), 8000);
+        try {
+          const res = await fetch(url, { cache: 'no-cache', signal: controller.signal });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return await res.json();
+        } catch (err) {
+          if (err.name === 'AbortError') throw new Error('请求超时，请检查网络后重试');
+          throw err;
+        } finally {
+          clearTimeout(timer);
+        }
+      }
+
       /* ============================================================
-         四、弹窗统一管理
+         四、弹窗统一管理（含滚动锁 / inert / aria-modal 联动）
          ============================================================ */
       const introModal = document.getElementById('intro-modal');
       const linksModal = document.getElementById('links-modal');
@@ -551,12 +622,34 @@
         }
       }
 
+      const isMobileViewport = () => window.matchMedia('(max-width: 820px)').matches;
+      let savedScrollY = 0;
+
       function syncPageState() {
         const detailOpen = detailView.classList.contains('is-open');
         const anyOpen = [introModal, linksModal, essayModal, detailView].some(el => el.classList.contains('is-open'));
+        const wasLocked = document.body.classList.contains('modal-open');
+
         pageRegions.forEach(el => applyInert(el, anyOpen));
         applyInert(essayModal, detailOpen);
-        document.body.classList.toggle('modal-open', anyOpen);
+        // detail 打开时 essayModal 退场为普通容器，避免双重 aria-modal
+        essayModal.setAttribute('aria-modal', detailOpen ? 'false' : 'true');
+
+        if (anyOpen && !wasLocked) {
+          if (isMobileViewport()) {
+            savedScrollY = window.scrollY || window.pageYOffset || 0;
+            document.body.style.top = `-${savedScrollY}px`;
+          }
+          document.body.classList.add('modal-open');
+        } else if (!anyOpen && wasLocked) {
+          document.body.classList.remove('modal-open');
+          document.body.style.top = '';
+          if (isMobileViewport()) {
+            window.scrollTo(0, savedScrollY);
+          }
+        } else {
+          document.body.classList.toggle('modal-open', anyOpen);
+        }
       }
 
       const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -587,22 +680,26 @@
         modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
         syncPageState();
         requestAnimationFrame(() => {
-          modal.scrollTop = 0; // 大外壳自己滚
+          modal.scrollTop = 0;
           const target = modal.querySelector('.close-btn, .back-btn') || modal.querySelector('button, [href], [tabindex]:not([tabindex="-1"])');
           target?.focus({ preventScroll: true });
         });
       }
 
+      // 先拆 is-open（焦点自然失焦到 body），再置 aria-hidden，最后恢复焦点
       function closeModalEl(modal) {
         if (!modal.classList.contains('is-open')) return;
-        modal.classList.remove('is-open'); modal.setAttribute('aria-hidden', 'true');
-        syncPageState();
         const t = modal._lastTrigger;
-        if (t && document.contains(t) && typeof t.focus === 'function') t.focus({ preventScroll: true });
+        modal.classList.remove('is-open');
+        modal.setAttribute('aria-hidden', 'true');
+        syncPageState();
+        if (t && document.contains(t) && typeof t.focus === 'function') {
+          t.focus({ preventScroll: true });
+        }
       }
 
       /* ============================================================
-         五、随笔模块
+         五、随笔模块（懒加载 + 超时）
          ============================================================ */
       const listContainer = document.getElementById('essay-list-container');
       const detailTitle = document.getElementById('detail-title');
@@ -610,6 +707,7 @@
       const detailBody = document.getElementById('detail-body');
       const backBtn = detailView.querySelector('.back-btn');
       let essaysData = [];
+      let essaysLoaded = false;
 
       function openEssayDetail(index, triggerEl) {
         const essay = essaysData[index];
@@ -620,18 +718,21 @@
         detailView._lastTrigger = triggerEl || document.activeElement;
         detailView.classList.add('is-open'); detailView.setAttribute('aria-hidden', 'false');
         syncPageState();
-        requestAnimationFrame(() => { 
-          detailView.scrollTop = 0; // 大外壳自己滚
-          backBtn.focus({ preventScroll: true }); 
+        requestAnimationFrame(() => {
+          detailView.scrollTop = 0;
+          backBtn.focus({ preventScroll: true });
         });
       }
 
       function closeEssayDetail() {
         if (!detailView.classList.contains('is-open')) return;
-        detailView.classList.remove('is-open'); detailView.setAttribute('aria-hidden', 'true');
-        syncPageState();
         const t = detailView._lastTrigger;
-        if (t && essayModal.classList.contains('is-open') && document.contains(t)) t.focus({ preventScroll: true });
+        detailView.classList.remove('is-open');
+        detailView.setAttribute('aria-hidden', 'true');
+        syncPageState();
+        if (t && essayModal.classList.contains('is-open') && document.contains(t)) {
+          t.focus({ preventScroll: true });
+        }
       }
 
       function renderEssays() {
@@ -657,14 +758,13 @@
       async function loadEssays() {
         try {
           if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
-          const res = await fetch('essays.json', { cache: 'no-cache' });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
+          const data = await fetchJson('essays.json');
           if (!Array.isArray(data)) throw new Error('JSON 顶层必须是数组');
           essaysData = data.filter(item => item && typeof item === 'object' && !Array.isArray(item));
           renderEssays();
         } catch (err) {
           console.error('加载随笔失败：', err);
+          essaysLoaded = false; // 允许下次打开时重试
           listContainer.innerHTML = '';
           const p = document.createElement('p'); p.className = 'essay-error'; p.textContent = `数据加载失败：${err.message}`;
           listContainer.appendChild(p);
@@ -672,16 +772,15 @@
       }
 
       /* ============================================================
-         六、友情链接模块
+         六、友情链接模块（懒加载 + 超时）
          ============================================================ */
       const linksContainer = document.getElementById('links-container');
+      let linksLoaded = false;
 
       async function loadLinks() {
         try {
           if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
-          const res = await fetch('links.json', { cache: 'no-cache' });
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          const data = await res.json();
+          const data = await fetchJson('links.json');
           linksContainer.innerHTML = '';
           if (!Array.isArray(data) || data.length === 0) {
             const p = document.createElement('p'); p.className = 'essay-empty'; p.textContent = '这里还空空如也……';
@@ -705,6 +804,7 @@
           linksContainer.appendChild(frag);
         } catch (err) {
           console.error('加载友链失败：', err);
+          linksLoaded = false; // 允许下次打开时重试
           linksContainer.innerHTML = '';
           const p = document.createElement('p'); p.className = 'essay-error'; p.textContent = `友链数据加载失败：${err.message}`;
           linksContainer.appendChild(p);
@@ -712,16 +812,25 @@
       }
 
       /* ============================================================
-         七、UI 交互
+         七、UI 交互 + 懒加载接入
          ============================================================ */
-      document.getElementById('open-essays').addEventListener('click', (e) => openModalEl(essayModal, e.currentTarget));
-      document.getElementById('close-essay').addEventListener('click', () => { if (detailView.classList.contains('is-open')) closeEssayDetail(); closeModalEl(essayModal); });
+      document.getElementById('open-essays').addEventListener('click', (e) => {
+        openModalEl(essayModal, e.currentTarget);
+        if (!essaysLoaded) { essaysLoaded = true; loadEssays(); }
+      });
+      document.getElementById('close-essay').addEventListener('click', () => {
+        if (detailView.classList.contains('is-open')) closeEssayDetail();
+        closeModalEl(essayModal);
+      });
       backBtn.addEventListener('click', closeEssayDetail);
 
       document.getElementById('open-intro').addEventListener('click', (e) => openModalEl(introModal, e.currentTarget));
       document.getElementById('close-intro').addEventListener('click', () => closeModalEl(introModal));
 
-      document.getElementById('open-links').addEventListener('click', (e) => openModalEl(linksModal, e.currentTarget));
+      document.getElementById('open-links').addEventListener('click', (e) => {
+        openModalEl(linksModal, e.currentTarget);
+        if (!linksLoaded) { linksLoaded = true; loadLinks(); }
+      });
       document.getElementById('close-links').addEventListener('click', () => closeModalEl(linksModal));
 
       document.addEventListener('keydown', (e) => {
@@ -741,9 +850,10 @@
       });
 
       /* ============================================================
-         八、自定义主题色模块
+         八、自定义主题色模块（含 theme-color 元信息联动）
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
+      const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 
       function hexToRgb(hex) {
         const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex || '');
@@ -753,27 +863,28 @@
         return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
       }
 
+      function applyThemeColor(hex) {
+        const rgb = hexToRgb(hex);
+        if (!rgb) return;
+        document.documentElement.style.setProperty('--accent', hex);
+        document.documentElement.style.setProperty('--accent-rgb', rgb);
+        if (themeColorMeta) themeColorMeta.setAttribute('content', hex);
+      }
+
       let savedColor = null;
       try { savedColor = localStorage.getItem('archive-theme-color'); } catch {}
-      const savedRgb = savedColor ? hexToRgb(savedColor) : null;
-      if (savedColor && savedRgb) {
-        document.documentElement.style.setProperty('--accent', savedColor);
-        document.documentElement.style.setProperty('--accent-rgb', savedRgb);
+      if (savedColor && hexToRgb(savedColor)) {
+        applyThemeColor(savedColor);
         colorPicker.value = savedColor;
       }
 
       colorPicker.addEventListener('input', (e) => {
         const newColor = e.target.value;
-        const rgb = hexToRgb(newColor);
-        if (!rgb) return;
-        document.documentElement.style.setProperty('--accent', newColor);
-        document.documentElement.style.setProperty('--accent-rgb', rgb);
+        applyThemeColor(newColor);
         try { localStorage.setItem('archive-theme-color', newColor); } catch {}
       });
 
-      // 启动
-      loadEssays();
-      loadLinks();
+      // 启动：随笔与友链改为打开弹窗时懒加载，这里不再预请求
     })();
   </script>
 </body>
