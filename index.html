@@ -6,7 +6,7 @@
   <meta name="description" content="XXXUAN 的赛博小窝 — 编程学习、随笔手记、音乐分享与友情链接。">
   <meta name="theme-color" content="#00ffcc">
   <title>XXXUAN-Archive</title>
-  <link rel="preload" as="image" href="NahidaBG.webp">
+  <link rel="preload" as="image" href="XXXUANBG.webp">
   <style>
     /* ========== 变量 & 基础 ========== */
     :root {
@@ -22,21 +22,20 @@
     body {
       min-height: 100%;
       margin: 0;
-      background: #0a0f12 url('NahidaBG.webp') no-repeat center center / cover fixed;
+      background: #0a0f12 url('XXXUANBG.webp') no-repeat center center / cover fixed;
       color: #fff;
       font-family: var(--font-sans);
       overflow: hidden;
     }
 
-    /* 桌面端 body 本来就 hidden，这条无副作用；
-       移动端通过媒体查询叠加 position: fixed 锁滚动 */
     body.modal-open { overflow: hidden; }
 
-    /* ========== 左侧主体 ========== */
+    /* ========== 左侧主体 (内容上移微调) ========== */
     .content {
       position: absolute;
       top: 0; left: 0; height: 100vh; height: 100dvh; width: 30vw; max-width: 400px;
-      padding: 40px;
+      /* 👇 修改：加大底部 padding，让垂直居中的内容整体往上抬 */
+      padding: 30px 40px 100px 40px;
       background-color: var(--panel);
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       border-radius: 0 15px 15px 0;
@@ -201,7 +200,7 @@
     .essay-date { display: block; color: #888; font-size: 13px; margin-bottom: 15px; }
     .essay-card p { color: #ccc; line-height: 1.8; margin: 0; font-size: 16px; }
 
-    /* ========== 友情链接卡片 ========== */
+    /* ========== 友情链接卡片 (更新：加入网址显示) ========== */
     .friend-link {
       display: flex; justify-content: space-between; align-items: center;
       padding: 20px 25px; background: rgba(255, 255, 255, 0.05);
@@ -213,7 +212,11 @@
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2); transform: translateY(-3px);
     }
     .friend-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    
+    /* 新增左侧包裹层 */
+    .friend-info { display: flex; flex-direction: column; gap: 6px; }
     .friend-name { font-size: 18px; font-weight: bold; color: var(--accent); }
+    .friend-url { font-size: 12px; color: #888; font-family: 'Courier New', monospace; word-break: break-all; }
     .friend-desc { font-size: 14px; color: #ccc; text-align: right; margin-left: 20px; }
 
     /* ========== 弹窗标题组 ========== */
@@ -225,7 +228,7 @@
     .essay-empty, .essay-error { color: #888; text-align: center; font-size: 16px; padding: 40px 0; margin: 0; }
     .essay-error { color: #ff8a80; }
 
-    /* ========== 随笔详情页（同样拆层） ========== */
+    /* ========== 随笔详情页 ========== */
     .essay-detail-view {
       display: none; position: fixed; inset: 0;
       background: transparent;
@@ -255,10 +258,7 @@
     }
     .back-btn:hover { background: var(--accent); color: #000; }
 
-    .detail-scroll-body {
-      padding: 10px 30px 30px 30px;
-    }
-
+    .detail-scroll-body { padding: 10px 30px 30px 30px; }
     .detail-content { width: 100%; max-width: 700px; margin: 0 auto; padding-top: 20px; }
     #detail-title { color: #fff; margin-top: 0; font-size: 28px; line-height: 1.4; overflow-wrap: anywhere; }
     .detail-body { color: #ddd; line-height: 2; font-size: 17px; margin-top: 30px; text-align: justify; overflow-wrap: break-word; }
@@ -288,14 +288,10 @@
     /* ========== 移动端适配 ========== */
     @media (max-width: 820px) {
       body { overflow: auto; overflow-x: hidden; background-attachment: scroll; }
-
-      /* 移动端滚动锁：fixed + top 由 JS 写入，保留滚动位置 */
       body.modal-open {
         position: fixed;
         top: 0; left: 0; right: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
+        width: 100%; height: 100%; overflow: hidden;
       }
 
       .content { position: relative; width: 100%; max-width: none; height: auto; min-height: 55vh; padding: 48px 24px; border-radius: 0 0 15px 15px; overflow: visible; }
@@ -312,8 +308,10 @@
       .essay-header h2 { font-size: 18px; }
       .modal-scroll-body { padding: 0 16px 24px 16px; }
 
-      .friend-link { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .friend-desc { text-align: left; margin-left: 0; }
+      /* 移动端友链特殊适配，把网址和简介放好 */
+      .friend-link { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .friend-info { width: 100%; }
+      .friend-desc { text-align: left; margin-left: 0; font-size: 13px; }
 
       .detail-header { padding: 15px 16px; }
       .detail-scroll-body { padding: 0 16px 20px 16px; }
@@ -414,8 +412,8 @@
   </div>
 
   <audio id="bgm" loop preload="auto">
-    <source src="nijuugoji_no_jounetsu-Inst.ogg" type="audio/ogg">
-    <source src="nijuugoji_no_jounetsu-Inst.mp3" type="audio/mpeg">
+    <source src="XXXUANBGM.ogg" type="audio/ogg">
+    <source src="XXXUANBGM.mp3" type="audio/mpeg">
   </audio>
   <button id="music-btn" class="music-btn" type="button" aria-pressed="false">▶ ２５時の旋律</button>
 
@@ -429,7 +427,7 @@
       'use strict';
 
       /* ============================================================
-         一、30小时制时钟逻辑
+         一、28小时制时钟逻辑 (修改：边界改为4点)
          ============================================================ */
       const clockTimeEl = document.getElementById('clock-time');
       const clockDateEl = document.getElementById('clock-date');
@@ -443,11 +441,12 @@
         let displayH = h;
         let text = "";
 
-        if (h < 6) {
-          displayH = h + 24;
+        // 改为 4 点为界限
+        if (h < 4) {
+          displayH = h + 24; // 0->24, 1->25, 2->26, 3->27
           if (displayH === 24) text = "位于时间的延长线上——当人们谈起今夜……";
-          else if (displayH >= 25 && displayH <= 29) text = "25点以后的时间，只属于还清醒的人";
-        } else if (h >= 6 && h < 12) {
+          else if (displayH >= 25 && displayH <= 27) text = "夜深了，时间只属于还清醒的人";
+        } else if (h >= 4 && h < 12) {
           text = "上午好——在忙吗？还是在摸鱼……";
         } else if (h >= 12 && h < 18) {
           text = "下午好——放松一下吧，何必如此（？装作）忙碌呢";
@@ -456,7 +455,8 @@
         }
 
         let displayDate = new Date(now);
-        if (h < 6) {
+        // 同步：如果是凌晨 0-3 点，日期倒退一天
+        if (h < 4) {
           displayDate.setDate(displayDate.getDate() - 1);
         }
 
@@ -497,7 +497,7 @@
       startClock();
 
       /* ============================================================
-         二、BGM 控制（UI 由 play / pause 事件驱动）
+         二、BGM 控制
          ============================================================ */
       const bgm = document.getElementById('bgm');
       const musicBtn = document.getElementById('music-btn');
@@ -507,7 +507,7 @@
       let bgmErrorTimer = null;
 
       function setBgmUI(playing) {
-        musicBtn.textContent = playing ? '⏸ 夜幕の静謐' : '▶ ２５時の旋律';
+        musicBtn.textContent = playing ? '⏸ 夜幕の静謐戻る' : '▶ ２５時の旋律';
         musicBtn.setAttribute('aria-pressed', String(playing));
         if (playing) {
           if (bgmErrorTimer) { clearTimeout(bgmErrorTimer); bgmErrorTimer = null; }
@@ -515,7 +515,6 @@
           bgmInfo.classList.add('show');
           bgmInfo.setAttribute('aria-hidden', 'false');
         } else {
-          // 错误提示还在倒计时的话，让计时器自己收尾
           if (!bgmErrorTimer) {
             bgmInfo.classList.remove('show');
             bgmInfo.setAttribute('aria-hidden', 'true');
@@ -594,7 +593,7 @@
       }
 
       /* ============================================================
-         四、弹窗统一管理（含滚动锁 / inert / aria-modal 联动）
+         四、弹窗统一管理
          ============================================================ */
       const introModal = document.getElementById('intro-modal');
       const linksModal = document.getElementById('links-modal');
@@ -632,7 +631,6 @@
 
         pageRegions.forEach(el => applyInert(el, anyOpen));
         applyInert(essayModal, detailOpen);
-        // detail 打开时 essayModal 退场为普通容器，避免双重 aria-modal
         essayModal.setAttribute('aria-modal', detailOpen ? 'false' : 'true');
 
         if (anyOpen && !wasLocked) {
@@ -686,7 +684,6 @@
         });
       }
 
-      // 先拆 is-open（焦点自然失焦到 body），再置 aria-hidden，最后恢复焦点
       function closeModalEl(modal) {
         if (!modal.classList.contains('is-open')) return;
         const t = modal._lastTrigger;
@@ -764,7 +761,7 @@
           renderEssays();
         } catch (err) {
           console.error('加载随笔失败：', err);
-          essaysLoaded = false; // 允许下次打开时重试
+          essaysLoaded = false;
           listContainer.innerHTML = '';
           const p = document.createElement('p'); p.className = 'essay-error'; p.textContent = `数据加载失败：${err.message}`;
           listContainer.appendChild(p);
@@ -772,7 +769,7 @@
       }
 
       /* ============================================================
-         六、友情链接模块（懒加载 + 超时）
+         六、友情链接模块（懒加载 + 超时 + 完整网址显示）
          ============================================================ */
       const linksContainer = document.getElementById('links-container');
       let linksLoaded = false;
@@ -787,16 +784,38 @@
             linksContainer.appendChild(p); return;
           }
           const frag = document.createDocumentFragment();
+          
           data.forEach((link) => {
             if (!link || typeof link !== 'object') return;
             const safeUrl = normalizeUrl(link.url);
             if (!safeUrl) return;
+            
             const a = document.createElement('a');
             a.href = safeUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'friend-link';
-            const nameSpan = document.createElement('span'); nameSpan.className = 'friend-name'; nameSpan.textContent = link.name || '未命名站点';
-            const descSpan = document.createElement('span'); descSpan.className = 'friend-desc'; descSpan.textContent = link.desc ? `${link.desc} →` : '访问 →';
-            a.append(nameSpan, descSpan); frag.appendChild(a);
+            
+            // 👇 新增：左侧包装层（名称 + 网址）
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'friend-info';
+
+            const nameSpan = document.createElement('span'); 
+            nameSpan.className = 'friend-name'; 
+            nameSpan.textContent = link.name || '未命名站点';
+            
+            const urlSpan = document.createElement('span');
+            urlSpan.className = 'friend-url';
+            urlSpan.textContent = safeUrl;
+
+            infoDiv.append(nameSpan, urlSpan);
+
+            // 右侧简介
+            const descSpan = document.createElement('span'); 
+            descSpan.className = 'friend-desc'; 
+            descSpan.textContent = link.desc ? `${link.desc} →` : '访问 →';
+            
+            a.append(infoDiv, descSpan); 
+            frag.appendChild(a);
           });
+          
           if (!frag.childNodes.length) {
             const p = document.createElement('p'); p.className = 'essay-empty'; p.textContent = '这里还空空如也……';
             linksContainer.appendChild(p); return;
@@ -804,7 +823,7 @@
           linksContainer.appendChild(frag);
         } catch (err) {
           console.error('加载友链失败：', err);
-          linksLoaded = false; // 允许下次打开时重试
+          linksLoaded = false;
           linksContainer.innerHTML = '';
           const p = document.createElement('p'); p.className = 'essay-error'; p.textContent = `友链数据加载失败：${err.message}`;
           linksContainer.appendChild(p);
@@ -819,7 +838,8 @@
         if (!essaysLoaded) { essaysLoaded = true; loadEssays(); }
       });
       document.getElementById('close-essay').addEventListener('click', () => {
-        if (detailView.classList.contains('is-open')) closeEssayDetail();
+        // 优化：随笔弹窗打开时自身会被 inert（仅在详情页打开时），
+        // 此按钮实际无法点击；直接关闭随笔弹窗即可。
         closeModalEl(essayModal);
       });
       backBtn.addEventListener('click', closeEssayDetail);
@@ -850,7 +870,7 @@
       });
 
       /* ============================================================
-         八、自定义主题色模块（含 theme-color 元信息联动）
+         八、自定义主题色模块
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
@@ -863,6 +883,16 @@
         return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
       }
 
+      // 优化：统一把任意合法 hex 规范成 6 位形式，
+      // 因为 <input type="color"> 的 value 只接受 #rrggbb。
+      function normalizeHex6(hex) {
+        const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex || '');
+        if (!m) return null;
+        let h = m[1];
+        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        return `#${h.toLowerCase()}`;
+      }
+
       function applyThemeColor(hex) {
         const rgb = hexToRgb(hex);
         if (!rgb) return;
@@ -873,9 +903,10 @@
 
       let savedColor = null;
       try { savedColor = localStorage.getItem('archive-theme-color'); } catch {}
-      if (savedColor && hexToRgb(savedColor)) {
-        applyThemeColor(savedColor);
-        colorPicker.value = savedColor;
+      const normalizedSaved = normalizeHex6(savedColor);
+      if (normalizedSaved && hexToRgb(normalizedSaved)) {
+        applyThemeColor(normalizedSaved);
+        colorPicker.value = normalizedSaved;
       }
 
       colorPicker.addEventListener('input', (e) => {
