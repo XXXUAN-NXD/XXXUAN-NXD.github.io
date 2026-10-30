@@ -34,7 +34,7 @@
     .content {
       position: absolute;
       top: 0; left: 0; height: 100vh; height: 100dvh; width: 30vw; max-width: 400px;
-      padding: 30px 40px 80px 40px; /* 底部稍微收一点 */
+      padding: 30px 40px 80px 40px; 
       background-color: var(--panel);
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       transform: translateZ(0); will-change: backdrop-filter;
@@ -72,7 +72,6 @@
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
     
-    /* 调整按钮布局，让三个按钮更紧凑 */
     .intro-actions { 
       display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; align-self: flex-start; 
     }
@@ -282,7 +281,7 @@
     .intro-body { color: #ddd; line-height: 2; text-align: justify; }
     .intro-body p { font-size: 17px; line-height: 2; margin-top: 0; }
 
-    /* ========== 👇 全新：终端监控面板 ========== */
+    /* ========== 👇 终端监控面板优化版 ========== */
     .terminal-panel {
       background: rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(var(--accent-rgb), 0.4);
@@ -295,25 +294,43 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 15px 0;
+      padding: 20px 0;
       border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
     }
     .terminal-row:last-child {
       border-bottom: none;
+      align-items: flex-end; /* 访客图片大，底部对齐会好看点 */
+    }
+    
+    /* 👇 新增：左侧信息包裹层，方便上下排列文字和小字 */
+    .term-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
     .term-label {
-      color: #888;
-      font-size: 15px;
+      color: #ccc; /* 稍微调亮一点，显得更专业 */
+      font-size: 16px;
       letter-spacing: 1px;
     }
+    .term-subtext {
+      color: #666;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+    
     .term-value {
       color: var(--accent);
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
       text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
     }
+    
+    /* 👇 修改：把看板娘尺寸放大 */
     .moe-counter-img {
-      height: 32px; /* 弹窗里可以稍微放大一点 */
+      height: 60px; /* 从 32px 放大到 60px */
+      margin-top: 10px;
+      border-radius: 6px;
     }
 
     /* ========== noscript 提示 ========== */
@@ -366,8 +383,19 @@
       .color-picker-wrap { bottom: 75px; right: 24px; }
 
       .terminal-panel { padding: 20px; }
-      .terminal-row { flex-direction: column; align-items: flex-start; gap: 8px; }
-      .moe-counter-img { height: 28px; }
+      .terminal-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+      .terminal-row:last-child { align-items: flex-start; }
+      .moe-counter-img { height: 50px; }
+    }
+
+    /* ========== 减少动态效果 ========== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
     }
   </style>
 </head>
@@ -389,7 +417,6 @@
     <h1>欢迎回来！</h1>
     <p>该网站用于编程技能学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
     
-    <!-- 👇 按钮组：加入了第三个按钮 -->
     <div class="intro-actions">
       <button id="open-intro" class="intro-btn" type="button">👤 关于开发者</button>
       <button id="open-links" class="intro-btn" type="button">🔗 友情链接</button>
@@ -416,7 +443,7 @@
     </div>
   </div>
 
-  <!-- ========== 终端监控弹窗 (全新) ========== -->
+  <!-- ========== 终端监控弹窗 ========== -->
   <div id="stats-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="stats-title" aria-hidden="true">
     <div class="essay-header">
       <div class="modal-title-group">
@@ -429,16 +456,28 @@
       <div class="essay-content essay-content--narrow">
         
         <div class="terminal-panel">
+          <!-- 👇 修改1：加入小字说明 -->
           <div class="terminal-row">
-            <span class="term-label">> 系统启动天数 (UPTIME)</span>
+            <div class="term-info">
+              <span class="term-label">> 系统启动天数 (UPTIME)</span>
+              <span class="term-subtext">自2026.10.19网站建立始</span>
+            </div>
             <span class="term-value" id="stat-days">-- DAYS</span>
           </div>
+          
           <div class="terminal-row">
-            <span class="term-label">> 核心版本号 (VERSION)</span>
+            <div class="term-info">
+              <span class="term-label">> 核心版本号 (VERSION)</span>
+            </div>
             <span class="term-value" id="stat-version">v1.0.0</span>
           </div>
+          
+          <!-- 👇 修改2：加入小字说明，并放大看板娘 -->
           <div class="terminal-row">
-            <span class="term-label">> 访客记录 (VISITORS)</span>
+            <div class="term-info">
+              <span class="term-label">> 访客记录 (VISITORS)</span>
+              <span class="term-subtext">自2026.10.31数据统计上线始</span>
+            </div>
             <img class="moe-counter-img" src="https://count.moeyy.cn/@xxxuan-archive" alt="visitors" />
           </div>
         </div>
@@ -661,6 +700,59 @@
         } catch { return null; }
       }
 
+      /**
+       * 白名单 sanitizer：用于把 intro.json 的 HTML 安全地注入页面。
+       */
+      function sanitizeHtml(html) {
+        const ALLOWED_TAGS = new Set([
+          'P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'S',
+          'A', 'UL', 'OL', 'LI',
+          'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+          'BLOCKQUOTE', 'CODE', 'PRE', 'SPAN', 'DIV', 'HR'
+        ]);
+        const COMMON_ATTRS = new Set(['class']);
+        const TAG_ATTRS = {
+          'A': new Set(['class', 'href', 'title', 'target', 'rel'])
+        };
+
+        const template = document.createElement('template');
+        template.innerHTML = String(html ?? '');
+
+        function cleanNode(node) {
+          if (node.nodeType === Node.TEXT_NODE) return;
+          if (node.nodeType !== Node.ELEMENT_NODE) { node.remove(); return; }
+
+          const tag = node.tagName;
+          if (!ALLOWED_TAGS.has(tag)) {
+            const text = document.createTextNode(node.textContent || '');
+            node.replaceWith(text);
+            return;
+          }
+
+          const allowedAttrs = TAG_ATTRS[tag] || COMMON_ATTRS;
+          for (const attr of Array.from(node.attributes)) {
+            if (!allowedAttrs.has(attr.name)) node.removeAttribute(attr.name);
+          }
+
+          if (tag === 'A') {
+            const safeHref = normalizeUrl(node.getAttribute('href'));
+            if (!safeHref) {
+              const text = document.createTextNode(node.textContent || '');
+              node.replaceWith(text);
+              return;
+            }
+            node.setAttribute('href', safeHref);
+            node.setAttribute('rel', 'noopener noreferrer');
+            if (node.getAttribute('target') !== '_blank') node.removeAttribute('target');
+          }
+
+          Array.from(node.childNodes).forEach(cleanNode);
+        }
+
+        Array.from(template.content.childNodes).forEach(cleanNode);
+        return template.innerHTML;
+      }
+
       async function fetchJson(url) {
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), 8000);
@@ -680,7 +772,7 @@
          四、弹窗统一管理
          ============================================================ */
       const introModal = document.getElementById('intro-modal');
-      const statsModal = document.getElementById('stats-modal'); // 👈 新增数据弹窗
+      const statsModal = document.getElementById('stats-modal'); 
       const linksModal = document.getElementById('links-modal');
       const essayModal = document.getElementById('essay-modal');
       const detailView = document.getElementById('essay-detail-view');
@@ -711,7 +803,6 @@
 
       function syncPageState() {
         const detailOpen = detailView.classList.contains('is-open');
-        // 👇 将 statsModal 加入判断
         const anyOpen = [introModal, statsModal, linksModal, essayModal, detailView].some(el => el.classList.contains('is-open'));
         const wasLocked = document.body.classList.contains('modal-open');
 
@@ -791,7 +882,7 @@
         const nowMs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
         const diffMs = nowMs - startMs;
         const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-        document.getElementById('stat-days').textContent = (days + 1) + ' DAYS';
+        document.getElementById('stat-days').textContent = Math.max(0, days + 1) + ' DAYS';
       }
       calculateDays();
 
@@ -812,14 +903,17 @@
          ============================================================ */
       let introLoaded = false;
       async function loadIntro() {
+        const introArea = document.getElementById('intro-content-area');
         try {
+          if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
           const data = await fetchJson('intro.json');
           if (data && data.content) {
-            document.getElementById('intro-content-area').innerHTML = data.content;
+            introArea.innerHTML = sanitizeHtml(data.content);
           }
         } catch (err) {
           console.error('加载自我介绍失败：', err);
-          document.getElementById('intro-content-area').innerHTML = '<p>数据加载失败，请稍后再试。</p>';
+          introLoaded = false; 
+          introArea.innerHTML = '<p>数据加载失败，请稍后再试。</p>';
         }
       }
 
@@ -873,6 +967,7 @@
         essaysData.forEach((essay, index) => {
           const card = document.createElement('div');
           card.className = 'essay-card'; card.setAttribute('role', 'button'); card.setAttribute('tabindex', '0');
+          card.setAttribute('aria-label', `阅读随笔：${essay.title || '无标题'}`);
           const h3 = document.createElement('h3'); h3.textContent = essay.title || '无标题';
           const date = document.createElement('span'); date.className = 'essay-date'; date.textContent = essay.date || '';
           const p = document.createElement('p'); p.textContent = essay.summary || '';
@@ -978,7 +1073,6 @@
       });
       document.getElementById('close-intro').addEventListener('click', () => closeModalEl(introModal));
 
-      // 👇 新增终端监控弹窗的绑定
       document.getElementById('open-stats').addEventListener('click', (e) => {
         openModalEl(statsModal, e.currentTarget);
       });
