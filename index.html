@@ -30,14 +30,14 @@
 
     body.modal-open { overflow: hidden; }
 
-    /* ========== 左侧主体 (内容上移微调) ========== */
+    /* ========== 左侧主体 ========== */
     .content {
       position: absolute;
       top: 0; left: 0; height: 100vh; height: 100dvh; width: 30vw; max-width: 400px;
-      /* 👇 修改：加大底部 padding，让垂直居中的内容整体往上抬 */
-      padding: 30px 40px 100px 40px;
+      padding: 30px 40px 80px 40px; /* 底部稍微收一点 */
       background-color: var(--panel);
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      transform: translateZ(0); will-change: backdrop-filter;
       border-radius: 0 15px 15px 0;
       display: flex; flex-direction: column;
       justify-content: center; justify-content: safe center;
@@ -71,8 +71,12 @@
       background-color: var(--accent); color: #000;
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
-    .intro-actions { display: flex; gap: 15px; margin-top: 30px; align-self: flex-start; }
-    .intro-actions .intro-btn { margin-top: 0; }
+    
+    /* 调整按钮布局，让三个按钮更紧凑 */
+    .intro-actions { 
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; align-self: flex-start; 
+    }
+    .intro-actions .intro-btn { margin-top: 0; padding: 10px 18px; font-size: 13px; }
 
     /* ========== 顶部 BGM 信息 ========== */
     .top-info {
@@ -80,10 +84,11 @@
       text-align: right; background-color: var(--panel); padding: 10px 20px;
       border-radius: 10px; font-size: 14px; line-height: 1.5;
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-      opacity: 0; visibility: hidden; transform: translateY(-8px);
+      transform: translateZ(0); will-change: backdrop-filter;
+      opacity: 0; visibility: hidden; transform: translateY(-8px) translateZ(0);
       transition: all 0.4s ease; pointer-events: none; z-index: 50;
     }
-    .top-info.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .top-info.show { opacity: 1; visibility: visible; transform: translateY(0) translateZ(0); }
 
     /* ========== 底部版权 ========== */
     .footer {
@@ -121,6 +126,7 @@
     }
     .project-btn {
       background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+      transform: translateZ(0); will-change: backdrop-filter;
       padding: 15px 30px; border-radius: 10px; color: var(--accent); border: 1px solid var(--accent);
       font-family: inherit; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s;
     }
@@ -139,7 +145,7 @@
     }
 
     /* ============================================================
-       弹窗外壳：backdrop-filter 抽到伪元素，滚动层无模糊重绘
+       弹窗外壳
        ============================================================ */
     .essay-modal {
       display: none; position: fixed; inset: 0;
@@ -155,6 +161,7 @@
       background-color: rgba(10, 10, 10, 0.45);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
+      transform: translateZ(0); will-change: backdrop-filter;
       pointer-events: none;
       z-index: -1;
     }
@@ -168,6 +175,7 @@
       padding: 30px 40px 20px 40px;
       background-color: rgba(10, 10, 10, 0.4);
       backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+      transform: translateZ(0); will-change: backdrop-filter;
     }
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; overflow-wrap: anywhere; }
 
@@ -181,7 +189,7 @@
       padding: 10px 40px 40px 40px;
     }
 
-    /* ========== 随笔与友链模块 ========== */
+    /* ========== 内容区域 ========== */
     .essay-content { width: 100%; max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 25px; }
     .essay-content--narrow { max-width: 700px; }
     .essay-content--links { max-width: 700px; gap: 15px; }
@@ -200,7 +208,7 @@
     .essay-date { display: block; color: #888; font-size: 13px; margin-bottom: 15px; }
     .essay-card p { color: #ccc; line-height: 1.8; margin: 0; font-size: 16px; }
 
-    /* ========== 友情链接卡片 (更新：加入网址显示) ========== */
+    /* ========== 友情链接卡片 ========== */
     .friend-link {
       display: flex; justify-content: space-between; align-items: center;
       padding: 20px 25px; background: rgba(255, 255, 255, 0.05);
@@ -213,10 +221,15 @@
     }
     .friend-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
     
-    /* 新增左侧包裹层 */
     .friend-info { display: flex; flex-direction: column; gap: 6px; }
     .friend-name { font-size: 18px; font-weight: bold; color: var(--accent); }
-    .friend-url { font-size: 12px; color: #888; font-family: 'Courier New', monospace; word-break: break-all; }
+    .friend-url { 
+      font-size: 12px; 
+      color: #ccc; 
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      font-family: 'Courier New', monospace; 
+      word-break: break-all; 
+    }
     .friend-desc { font-size: 14px; color: #ccc; text-align: right; margin-left: 20px; }
 
     /* ========== 弹窗标题组 ========== */
@@ -241,6 +254,7 @@
       background-color: rgba(10, 10, 10, 0.45);
       backdrop-filter: blur(25px);
       -webkit-backdrop-filter: blur(25px);
+      transform: translateZ(0); will-change: backdrop-filter;
       pointer-events: none;
       z-index: -1;
     }
@@ -251,6 +265,7 @@
       padding: 20px 30px;
       background-color: rgba(10, 10, 10, 0.4);
       backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
+      transform: translateZ(0); will-change: backdrop-filter;
     }
     .back-btn {
       background: rgba(var(--accent-rgb), 0.1); color: var(--accent); border: 1px solid var(--accent);
@@ -265,7 +280,41 @@
 
     /* ========== 自我介绍正文 ========== */
     .intro-body { color: #ddd; line-height: 2; text-align: justify; }
-    .intro-body p { font-size: 17px; line-height: 2; }
+    .intro-body p { font-size: 17px; line-height: 2; margin-top: 0; }
+
+    /* ========== 👇 全新：终端监控面板 ========== */
+    .terminal-panel {
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(var(--accent-rgb), 0.4);
+      border-radius: 15px;
+      padding: 30px;
+      font-family: 'Courier New', Courier, monospace;
+      box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    }
+    .terminal-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+    .terminal-row:last-child {
+      border-bottom: none;
+    }
+    .term-label {
+      color: #888;
+      font-size: 15px;
+      letter-spacing: 1px;
+    }
+    .term-value {
+      color: var(--accent);
+      font-size: 20px;
+      font-weight: bold;
+      text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
+    }
+    .moe-counter-img {
+      height: 32px; /* 弹窗里可以稍微放大一点 */
+    }
 
     /* ========== noscript 提示 ========== */
     .noscript-warning {
@@ -298,7 +347,7 @@
       .cyber-clock { text-align: center; border-left: none; padding-left: 0; }
       .clock-time { font-size: 26px; }
       .intro-btn { align-self: center; }
-      .intro-actions { flex-direction: column; width: 100%; }
+      .intro-actions { flex-direction: column; width: 100%; align-items: center; }
       .intro-actions .intro-btn { width: 100%; margin-top: 10px; }
       .projects { position: relative; top: auto; right: auto; transform: none; margin: 40px 24px 40px; }
       .project-btn { width: 100%; }
@@ -308,7 +357,6 @@
       .essay-header h2 { font-size: 18px; }
       .modal-scroll-body { padding: 0 16px 24px 16px; }
 
-      /* 移动端友链特殊适配，把网址和简介放好 */
       .friend-link { flex-direction: column; align-items: flex-start; gap: 10px; }
       .friend-info { width: 100%; }
       .friend-desc { text-align: left; margin-left: 0; font-size: 13px; }
@@ -316,6 +364,10 @@
       .detail-header { padding: 15px 16px; }
       .detail-scroll-body { padding: 0 16px 20px 16px; }
       .color-picker-wrap { bottom: 75px; right: 24px; }
+
+      .terminal-panel { padding: 20px; }
+      .terminal-row { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .moe-counter-img { height: 28px; }
     }
   </style>
 </head>
@@ -336,9 +388,12 @@
 
     <h1>欢迎回来！</h1>
     <p>该网站用于编程技能学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
+    
+    <!-- 👇 按钮组：加入了第三个按钮 -->
     <div class="intro-actions">
       <button id="open-intro" class="intro-btn" type="button">👤 关于开发者</button>
       <button id="open-links" class="intro-btn" type="button">🔗 友情链接</button>
+      <button id="open-stats" class="intro-btn" type="button">📊 终端监控</button>
     </div>
   </div>
 
@@ -346,6 +401,7 @@
     <button id="open-essays" class="project-btn" type="button">📝 随笔手记</button>
   </div>
 
+  <!-- ========== 关于开发者弹窗 ========== -->
   <div id="intro-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="intro-title" aria-hidden="true">
     <div class="essay-header">
       <h2 id="intro-title">关于XXXUAN（我）</h2>
@@ -353,16 +409,45 @@
     </div>
     <div class="modal-scroll-body">
       <div class="essay-content essay-content--narrow">
-        <div class="intro-body">
-          <p>这里是XXXUAN的自我介绍……</p>
-          <p>XXXUAN起初是我有一回心血来潮想当曲师的时候给自己起的艺名，后来就变成有关音乐、音游、编程以及数字技术的内容全署名XXXUAN了。<br>本人爱好有二次元、电子乐，以及会弹吉他；数学是本人的一生之敌（谁来救救孩子啊！）<br>本人作为二次元推的角色主要有纳西妲（原神）、宵崎奏＆東雲絵名（Project Sekai）、以及基沃托斯的学生们（Blue Archive），不知道在这能不能找到同好啊。<br></p>
-          <p>关于为什么要建这个站——<br>主要是为了参与社团活动，然而实际上心底也很希望可以有这样一个“赛博小窝”，记录和展现自己的个性、想法和创意，感觉后者应当占比更大一些；另外本人在编程上虽然算是小白里的半吊子但其实也很感兴趣。<br><br></p>
-          <p>联系开发者：<br>微信：XXXUAN-_-1006<br>邮箱：xiaoxuan101006@163.com</p>
+        <div class="intro-body" id="intro-content-area">
+          <p>正在加载档案...</p>
         </div>
       </div>
     </div>
   </div>
 
+  <!-- ========== 终端监控弹窗 (全新) ========== -->
+  <div id="stats-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="stats-title" aria-hidden="true">
+    <div class="essay-header">
+      <div class="modal-title-group">
+        <h2 id="stats-title" class="modal-title">终端监控 - Terminal Monitor</h2>
+        <span class="modal-hint">💡 站点数据实时概览</span>
+      </div>
+      <button id="close-stats" class="close-btn" type="button" aria-label="关闭">&times;</button>
+    </div>
+    <div class="modal-scroll-body">
+      <div class="essay-content essay-content--narrow">
+        
+        <div class="terminal-panel">
+          <div class="terminal-row">
+            <span class="term-label">> 系统启动天数 (UPTIME)</span>
+            <span class="term-value" id="stat-days">-- DAYS</span>
+          </div>
+          <div class="terminal-row">
+            <span class="term-label">> 核心版本号 (VERSION)</span>
+            <span class="term-value" id="stat-version">v1.0.0</span>
+          </div>
+          <div class="terminal-row">
+            <span class="term-label">> 访客记录 (VISITORS)</span>
+            <img class="moe-counter-img" src="https://count.moeyy.cn/@xxxuan-archive" alt="visitors" />
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 友情链接弹窗 ========== -->
   <div id="links-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="links-title" aria-hidden="true">
     <div class="essay-header">
       <div class="modal-title-group">
@@ -378,6 +463,7 @@
     </div>
   </div>
 
+  <!-- ========== 随笔列表弹窗 ========== -->
   <div id="essay-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="essay-title" aria-hidden="true">
     <div class="essay-header">
       <div class="modal-title-group">
@@ -393,6 +479,7 @@
     </div>
   </div>
 
+  <!-- ========== 随笔详情页 ========== -->
   <div id="essay-detail-view" class="essay-detail-view" role="dialog" aria-modal="true" aria-labelledby="detail-title" aria-hidden="true">
     <div class="detail-header">
       <button class="back-btn" type="button">← 返回列表</button>
@@ -427,7 +514,7 @@
       'use strict';
 
       /* ============================================================
-         一、28小时制时钟逻辑 (修改：边界改为4点)
+         一、28小时制时钟逻辑
          ============================================================ */
       const clockTimeEl = document.getElementById('clock-time');
       const clockDateEl = document.getElementById('clock-date');
@@ -441,9 +528,8 @@
         let displayH = h;
         let text = "";
 
-        // 改为 4 点为界限
         if (h < 4) {
-          displayH = h + 24; // 0->24, 1->25, 2->26, 3->27
+          displayH = h + 24;
           if (displayH === 24) text = "位于时间的延长线上——当人们谈起今夜……";
           else if (displayH >= 25 && displayH <= 27) text = "夜深了，时间只属于还清醒的人";
         } else if (h >= 4 && h < 12) {
@@ -455,7 +541,6 @@
         }
 
         let displayDate = new Date(now);
-        // 同步：如果是凌晨 0-3 点，日期倒退一天
         if (h < 4) {
           displayDate.setDate(displayDate.getDate() - 1);
         }
@@ -566,8 +651,7 @@
          三、通用工具
          ============================================================ */
       const escapeHtml = (str) => String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-      const renderRichText = (text) => escapeHtml(text).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r\n?|\n/g, '<br>');
-
+      
       function normalizeUrl(raw) {
         if (typeof raw !== 'string' || !raw.trim()) return null;
         try {
@@ -596,6 +680,7 @@
          四、弹窗统一管理
          ============================================================ */
       const introModal = document.getElementById('intro-modal');
+      const statsModal = document.getElementById('stats-modal'); // 👈 新增数据弹窗
       const linksModal = document.getElementById('links-modal');
       const essayModal = document.getElementById('essay-modal');
       const detailView = document.getElementById('essay-detail-view');
@@ -626,7 +711,8 @@
 
       function syncPageState() {
         const detailOpen = detailView.classList.contains('is-open');
-        const anyOpen = [introModal, linksModal, essayModal, detailView].some(el => el.classList.contains('is-open'));
+        // 👇 将 statsModal 加入判断
+        const anyOpen = [introModal, statsModal, linksModal, essayModal, detailView].some(el => el.classList.contains('is-open'));
         const wasLocked = document.body.classList.contains('modal-open');
 
         pageRegions.forEach(el => applyInert(el, anyOpen));
@@ -696,7 +782,49 @@
       }
 
       /* ============================================================
-         五、随笔模块（懒加载 + 超时）
+         五、数据统计模块加载
+         ============================================================ */
+      function calculateDays() {
+        const startDate = new Date('2026-10-19T00:00:00');
+        const now = new Date();
+        const startMs = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate()).getTime();
+        const nowMs = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+        const diffMs = nowMs - startMs;
+        const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        document.getElementById('stat-days').textContent = (days + 1) + ' DAYS';
+      }
+      calculateDays();
+
+      async function loadConfig() {
+        try {
+          const data = await fetchJson('config.json');
+          if (data && data.version) {
+            document.getElementById('stat-version').textContent = 'v' + data.version;
+          }
+        } catch (err) {
+          console.error('加载版本号失败：', err);
+        }
+      }
+      loadConfig();
+
+      /* ============================================================
+         六、自我介绍模块
+         ============================================================ */
+      let introLoaded = false;
+      async function loadIntro() {
+        try {
+          const data = await fetchJson('intro.json');
+          if (data && data.content) {
+            document.getElementById('intro-content-area').innerHTML = data.content;
+          }
+        } catch (err) {
+          console.error('加载自我介绍失败：', err);
+          document.getElementById('intro-content-area').innerHTML = '<p>数据加载失败，请稍后再试。</p>';
+        }
+      }
+
+      /* ============================================================
+         七、随笔模块
          ============================================================ */
       const listContainer = document.getElementById('essay-list-container');
       const detailTitle = document.getElementById('detail-title');
@@ -705,6 +833,10 @@
       const backBtn = detailView.querySelector('.back-btn');
       let essaysData = [];
       let essaysLoaded = false;
+
+      function renderRichText(text) {
+        return escapeHtml(text).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r\n?|\n/g, '<br>');
+      }
 
       function openEssayDetail(index, triggerEl) {
         const essay = essaysData[index];
@@ -769,7 +901,7 @@
       }
 
       /* ============================================================
-         六、友情链接模块（懒加载 + 超时 + 完整网址显示）
+         八、友情链接模块
          ============================================================ */
       const linksContainer = document.getElementById('links-container');
       let linksLoaded = false;
@@ -793,7 +925,6 @@
             const a = document.createElement('a');
             a.href = safeUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'friend-link';
             
-            // 👇 新增：左侧包装层（名称 + 网址）
             const infoDiv = document.createElement('div');
             infoDiv.className = 'friend-info';
 
@@ -807,7 +938,6 @@
 
             infoDiv.append(nameSpan, urlSpan);
 
-            // 右侧简介
             const descSpan = document.createElement('span'); 
             descSpan.className = 'friend-desc'; 
             descSpan.textContent = link.desc ? `${link.desc} →` : '访问 →';
@@ -831,21 +961,28 @@
       }
 
       /* ============================================================
-         七、UI 交互 + 懒加载接入
+         九、UI 交互 + 懒加载接入
          ============================================================ */
       document.getElementById('open-essays').addEventListener('click', (e) => {
         openModalEl(essayModal, e.currentTarget);
         if (!essaysLoaded) { essaysLoaded = true; loadEssays(); }
       });
       document.getElementById('close-essay').addEventListener('click', () => {
-        // 优化：随笔弹窗打开时自身会被 inert（仅在详情页打开时），
-        // 此按钮实际无法点击；直接关闭随笔弹窗即可。
         closeModalEl(essayModal);
       });
       backBtn.addEventListener('click', closeEssayDetail);
 
-      document.getElementById('open-intro').addEventListener('click', (e) => openModalEl(introModal, e.currentTarget));
+      document.getElementById('open-intro').addEventListener('click', (e) => {
+        openModalEl(introModal, e.currentTarget);
+        if (!introLoaded) { introLoaded = true; loadIntro(); }
+      });
       document.getElementById('close-intro').addEventListener('click', () => closeModalEl(introModal));
+
+      // 👇 新增终端监控弹窗的绑定
+      document.getElementById('open-stats').addEventListener('click', (e) => {
+        openModalEl(statsModal, e.currentTarget);
+      });
+      document.getElementById('close-stats').addEventListener('click', () => closeModalEl(statsModal));
 
       document.getElementById('open-links').addEventListener('click', (e) => {
         openModalEl(linksModal, e.currentTarget);
@@ -857,6 +994,7 @@
         if (e.key === 'Escape') {
           if (detailView.classList.contains('is-open')) { closeEssayDetail(); return; }
           if (essayModal.classList.contains('is-open')) { closeModalEl(essayModal); return; }
+          if (statsModal.classList.contains('is-open')) { closeModalEl(statsModal); return; }
           if (introModal.classList.contains('is-open')) { closeModalEl(introModal); return; }
           if (linksModal.classList.contains('is-open')) { closeModalEl(linksModal); return; }
           return;
@@ -864,13 +1002,14 @@
         const activeModal =
           detailView.classList.contains('is-open') ? detailView :
           essayModal.classList.contains('is-open') ? essayModal :
+          statsModal.classList.contains('is-open') ? statsModal :
           introModal.classList.contains('is-open') ? introModal :
           linksModal.classList.contains('is-open') ? linksModal : null;
         if (activeModal) trapFocus(activeModal, e);
       });
 
       /* ============================================================
-         八、自定义主题色模块
+         十、自定义主题色模块
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
@@ -883,8 +1022,6 @@
         return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
       }
 
-      // 优化：统一把任意合法 hex 规范成 6 位形式，
-      // 因为 <input type="color"> 的 value 只接受 #rrggbb。
       function normalizeHex6(hex) {
         const m = /^#?([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(hex || '');
         if (!m) return null;
@@ -915,7 +1052,6 @@
         try { localStorage.setItem('archive-theme-color', newColor); } catch {}
       });
 
-      // 启动：随笔与友链改为打开弹窗时懒加载，这里不再预请求
     })();
   </script>
 </body>
