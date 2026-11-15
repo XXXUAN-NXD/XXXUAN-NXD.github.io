@@ -163,24 +163,23 @@
       transform: translateZ(0); will-change: backdrop-filter;
     }
 
-    /* 2. 特性查询：只有支持毛玻璃的浏览器才允许“透”一点 */
+        /* 2. 特性查询：支持毛玻璃的浏览器放开限制 */
     @supports ((-webkit-backdrop-filter: blur(25px)) or (backdrop-filter: blur(25px))) {
       .content { background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
       .top-info { background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
       .project-btn { background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
       
-      /* 弹窗直接加在父级上，透明度设为 0.75，绝对安全 */
+      /* ✨ 军师调整：降低透明度，拉满质感 ✨ */
       .essay-modal, .essay-detail-view {
-        background-color: rgba(10, 10, 10, 0.75); 
+        background-color: rgba(10, 10, 10, 0.55); /* 从 0.75 降到 0.55 */
         backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       }
       
       .essay-header, .detail-header {
-        background-color: rgba(10, 10, 10, 0.65);
+        background-color: rgba(10, 10, 10, 0.45); /* 顶栏再透一点 */
         backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       }
     }
-
     /* ========== 内容区域 ========== */
     .essay-header h2 { color: var(--accent); margin: 0; letter-spacing: 2px; font-size: 22px; line-height: 1.4; margin-right: 15px; overflow-wrap: anywhere; }
     .close-btn { background: none; border: none; padding: 0; line-height: 1; color: var(--accent); font-size: 35px; font-family: inherit; cursor: pointer; transition: all 0.3s; flex-shrink: 0; }
