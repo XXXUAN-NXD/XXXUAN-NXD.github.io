@@ -128,28 +128,27 @@
     }
 
     /* ============================================================
-       弹窗外壳 (核心降级策略区)
+       弹窗外壳 (绝对防穿透策略，不再使用 ::before)
        ============================================================ */
     .essay-modal {
-      display: none; position: fixed; inset: 0; background: transparent; z-index: 900; overflow-y: auto; overscroll-behavior: contain;
+      display: none; position: fixed; inset: 0; 
+      background-color: rgba(10, 10, 10, 0.95); /* 极深色底，死死盖住背景 */
+      z-index: 900; 
+      overflow-y: auto; 
+      overscroll-behavior: contain;
     }
     .essay-detail-view {
-      display: none; position: fixed; inset: 0; background: transparent; overflow-y: auto; overscroll-behavior: contain; z-index: 1000;
-    }
-
-    /* 1. 默认状态：极深色底，保证文字清晰 */
-    .essay-modal::before, .essay-detail-view::before {
-      content: ''; position: fixed; inset: 0;
-      background-color: rgba(10, 10, 10, 0.95); 
-      pointer-events: none; z-index: -1;
-      transform: translateZ(0);
-      isolation: isolate; /* 防止层叠上下文丢失 */
+      display: none; position: fixed; inset: 0; 
+      background-color: rgba(10, 10, 10, 0.95); /* 极深色底 */
+      overflow-y: auto; 
+      overscroll-behavior: contain; 
+      z-index: 1000;
     }
 
     .essay-modal.is-open { display: block; animation: fadeIn 0.3s ease both; }
     .essay-detail-view.is-open { display: block; animation: fadeIn 0.25s ease both; }
 
-    /* 顶部栏默认深色兜底 */
+    /* 默认顶部栏也是深色 */
     .essay-header {
       display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -164,19 +163,20 @@
       transform: translateZ(0); will-change: backdrop-filter;
     }
 
-    /* 2. 特性查询：支持毛玻璃的浏览器放开限制 */
+    /* 2. 特性查询：只有支持毛玻璃的浏览器才允许“透”一点 */
     @supports ((-webkit-backdrop-filter: blur(25px)) or (backdrop-filter: blur(25px))) {
       .content { background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
       .top-info { background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
       .project-btn { background-color: var(--panel); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
       
-      /* 透明度设为 0.65，即使 PC Chrome 罢工，也能看清字 */
-      .essay-modal::before, .essay-detail-view::before {
-        background-color: rgba(10, 10, 10, 0.65);
+      /* 弹窗直接加在父级上，透明度设为 0.75，绝对安全 */
+      .essay-modal, .essay-detail-view {
+        background-color: rgba(10, 10, 10, 0.75); 
         backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
       }
+      
       .essay-header, .detail-header {
-        background-color: rgba(10, 10, 10, 0.6);
+        background-color: rgba(10, 10, 10, 0.65);
         backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px);
       }
     }
@@ -283,15 +283,10 @@
       .moe-counter-img { height: 70px; }
 
       /* 移动端强制关闭毛玻璃 */
-      .essay-modal::before, .essay-detail-view::before {
-        background-color: rgba(10, 10, 10, 0.96) !important; 
+      .essay-modal, .essay-detail-view, .essay-header, .detail-header {
         backdrop-filter: none !important;
         -webkit-backdrop-filter: none !important;
-      }
-      .essay-header, .detail-header {
         background-color: rgba(10, 10, 10, 0.98) !important;
-        backdrop-filter: none !important;
-        -webkit-backdrop-filter: none !important;
       }
     }
 
