@@ -19,6 +19,20 @@
     *, *::before, *::after { box-sizing: border-box; }
     html { height: 100%; color-scheme: dark; }
 
+    /* ✨ 新增：全局自定义滚动条，干掉默认的丑陋滚动条 ✨ */
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
+    }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(var(--accent-rgb), 0.4); border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(var(--accent-rgb), 0.7);
+    }
+
     body {
       min-height: 100%;
       margin: 0;
@@ -42,7 +56,6 @@
       display: flex; flex-direction: column;
       text-align: left; overflow-y: auto; overscroll-behavior: contain;
     }
-    /* 内容少时上下居中，内容超高时自动从顶部开始正常滚动 */
     .content > :first-child { margin-top: auto; }
     .content > :last-child { margin-bottom: auto; }
 
@@ -349,6 +362,7 @@
       height: 90px;
       margin-top: 10px;
       border-radius: 6px;
+      background-color: rgba(255,255,255,0.05); /* 占位底色 */
     }
 
     /* ========== noscript 提示 ========== */
@@ -360,14 +374,6 @@
 
     /* ========== 动画与滚动条 ========== */
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    .essay-modal::-webkit-scrollbar, .essay-detail-view::-webkit-scrollbar { width: 8px; }
-    .essay-modal::-webkit-scrollbar-thumb, .essay-detail-view::-webkit-scrollbar-thumb {
-      background: rgba(var(--accent-rgb), 0.4); border-radius: 4px;
-    }
-    .essay-modal, .essay-detail-view {
-      scrollbar-width: thin; scrollbar-color: rgba(var(--accent-rgb), 0.5) transparent;
-    }
 
     /* ========== 移动端适配 ========== */
     @media (max-width: 820px) {
@@ -433,7 +439,7 @@
     </div>
 
     <h1>欢迎回来！</h1>
-    <p>该网站用于编程技能学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
+    <p>该网站用于编程学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
 
     <div class="intro-actions">
       <button id="open-intro" class="intro-btn" type="button">👤 关于开发者</button>
@@ -498,7 +504,8 @@
               <span class="term-label">> 访客记录 (VISITORS)</span>
               <span class="term-subtext">自2026.10.31数据统计上线始</span>
             </div>
-            <img class="moe-counter-img" src="https://count.moeyy.cn/@xxxuan-archive" alt="visitors" />
+            <!-- 加上 loading="lazy" 和 onerror 兜底 -->
+            <img class="moe-counter-img" src="https://count.moeyy.cn/@xxxuan-archive" alt="visitors" loading="lazy" onerror="this.style.display='none'" />
           </div>
         </div>
 
@@ -741,13 +748,12 @@
       /* ============================================================
          三、渐弱跳转音乐馆
          ============================================================ */
-      let leavingToMusic = false; // 防止连点触发多次渐弱/跳转
+      let leavingToMusic = false; 
 
       document.getElementById('go-to-music').addEventListener('click', () => {
         if (leavingToMusic) return;
         leavingToMusic = true;
 
-        // 如果 BGM 正在播放，执行渐弱
         if (!bgm.paused) {
           let vol = bgm.volume;
           const fadeOut = setInterval(() => {
@@ -757,9 +763,9 @@
             } else {
               clearInterval(fadeOut);
               bgm.pause();
-              window.location.href = 'music.html'; // 跳转
+              window.location.href = 'music.html'; 
             }
-          }, 50); // 50ms 减一次，总共约0.5秒渐弱
+          }, 50); 
         } else {
           window.location.href = 'music.html';
         }
@@ -774,7 +780,6 @@
         try {
           const u = new URL(raw.trim(), location.href);
           if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
-          // 禁止带用户名密码，降低钓鱼风险
           if (u.username || u.password) return null;
           return u.href;
         } catch {
@@ -782,7 +787,6 @@
         }
       }
 
-      // 富文本白名单：预设 <br> 等换行 & 常用排版标签
       const SANITIZE_ALLOWED_TAGS = new Set([
         'P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'S',
         'A', 'UL', 'OL', 'LI',
@@ -790,17 +794,11 @@
         'BLOCKQUOTE', 'CODE', 'PRE', 'SPAN', 'DIV', 'HR',
         'SUB', 'SUP', 'MARK', 'DEL', 'INS'
       ]);
-      // 默认不允许任何属性；只有 A 标签保留有限的几个
+      
       const SANITIZE_TAG_ATTRS = {
         'A': new Set(['href', 'title', 'target', 'rel'])
       };
 
-      /**
-       * 唯一富文本净化入口。
-       * - 非白名单标签：降级为纯文本（textContent），不保留任何子结构
-       * - 白名单标签：递归清洗属性、处理 A 的 href
-       * 返回值：DocumentFragment（避免「序列化后再 innerHTML 解析」的 mXSS 风险）
-       */
       function sanitizeToFragment(html) {
         const template = document.createElement('template');
         template.innerHTML = String(html ?? '');
@@ -844,12 +842,10 @@
         return template.content;
       }
 
-      // 纯文本写入（默认出口）
       function setText(el, text) {
         if (el) el.textContent = String(text ?? '');
       }
 
-      // 富文本写入（唯一 innerHTML 相关出口）
       function setSanitizedHtml(el, html) {
         if (el) el.replaceChildren(sanitizeToFragment(html));
       }
@@ -869,7 +865,6 @@
         }
       }
 
-      // 统一错误渲染 + 重试按钮
       function renderError(container, message, retryCallback) {
         container.replaceChildren();
         const wrap = document.createElement('div');
@@ -884,7 +879,6 @@
         btn.type = 'button';
         btn.textContent = '🔄 重新加载';
         btn.addEventListener('click', () => {
-          // 点击后先显示加载中提示，防止用户连点
           container.replaceChildren();
           const loading = document.createElement('p');
           loading.className = 'essay-empty';
@@ -937,7 +931,7 @@
       class ModalManager {
         constructor(regions) {
           this.regions = regions;
-          this.stack = []; // { el, trigger, backLabel }
+          this.stack = []; 
           this.savedScrollY = 0;
           this.supportsInert = 'inert' in HTMLElement.prototype;
         }
@@ -975,15 +969,12 @@
         _sync() {
           const anyOpen = this.depth > 0;
 
-          // 页面主区域：只要有任何弹窗打开就 inert
           this.regions.forEach(el => this._applyInert(el, anyOpen));
 
-          // 栈中除栈顶外的所有 modal：inert
           this.stack.forEach((s, idx) => {
             this._applyInert(s.el, idx < this.stack.length - 1);
           });
 
-          // 滚动锁定
           const locked = document.body.classList.contains('modal-open');
           if (anyOpen && !locked) {
             if (this._isMobile()) {
@@ -1000,11 +991,6 @@
           }
         }
 
-        /**
-         * 打开弹窗并入栈。
-         * @param {HTMLElement} el 目标弹窗元素
-         * @param {{ trigger?: HTMLElement, backLabel?: string }} opts
-         */
         open(el, opts = {}) {
           if (!el || this.isOpen(el)) return;
 
@@ -1014,7 +1000,6 @@
             backLabel: opts.backLabel || null
           };
 
-          // detail 视图：动态更新返回按钮文字
           if (entry.backLabel) {
             const backBtn = el.querySelector('.back-btn');
             if (backBtn) backBtn.textContent = entry.backLabel;
@@ -1027,7 +1012,6 @@
 
           requestAnimationFrame(() => {
             el.scrollTop = 0;
-            // 优先返回按钮，其次关闭按钮
             const target =
               el.querySelector('.back-btn') ||
               el.querySelector('.close-btn') ||
@@ -1052,7 +1036,6 @@
               entry.trigger.focus({ preventScroll: true });
             }
           } else if (this.top) {
-            // 非栈顶被移除时，焦点回到新的栈顶
             const newTop = this.top.el;
             const target = newTop.querySelector('.back-btn, .close-btn');
             target?.focus({ preventScroll: true });
@@ -1103,7 +1086,6 @@
         try {
           if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
           const data = await fetchJson('intro.json');
-          // 校验数据结构，避免格式错误时页面静默空白
           if (!data || typeof data !== 'object' || typeof data.content !== 'string') {
             throw new Error('intro.json 格式不正确（应为 { "content": "..." }）');
           }
@@ -1421,7 +1403,7 @@
       }
 
       /* ============================================================
-         十一、UI 交互 + 懒加载接入（统一调用 ModalManager）
+         十一、UI 交互 + 懒加载接入
          ============================================================ */
       document.getElementById('open-essays').addEventListener('click', (e) => {
         modalManager.open(essayModal, { trigger: e.currentTarget });
@@ -1454,10 +1436,8 @@
       });
       document.getElementById('close-links').addEventListener('click', () => modalManager.close(linksModal));
 
-      // 详情页返回按钮：关闭栈顶
       detailBackBtn.addEventListener('click', () => modalManager.closeTop());
 
-      // 全局键盘：Escape 关闭栈顶；Tab 在栈顶内循环
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
           if (modalManager.top) {
@@ -1470,7 +1450,7 @@
       });
 
       /* ============================================================
-         十二、自定义主题色模块
+         十二、自定义主题色模块 (已夯实，供子页面读取)
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
