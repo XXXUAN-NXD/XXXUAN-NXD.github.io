@@ -17,7 +17,7 @@
     }
 
     *, *::before, *::after { box-sizing: border-box; }
-    html { height: 100%; }
+    html { height: 100%; color-scheme: dark; }
 
     body {
       min-height: 100%;
@@ -34,15 +34,17 @@
     .content {
       position: absolute;
       top: 0; left: 0; height: 100vh; height: 100dvh; width: 30vw; max-width: 400px;
-      padding: 30px 40px 80px 40px;
+      padding: 30px 40px 80px 40px; 
       background-color: var(--panel);
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       transform: translateZ(0); will-change: backdrop-filter;
       border-radius: 0 15px 15px 0;
       display: flex; flex-direction: column;
-      justify-content: center; justify-content: safe center;
       text-align: left; overflow-y: auto; overscroll-behavior: contain;
     }
+    /* 内容少时上下居中，内容超高时自动从顶部开始正常滚动 */
+    .content > :first-child { margin-top: auto; }
+    .content > :last-child { margin-bottom: auto; }
 
     .cyber-clock {
       margin-bottom: 25px;
@@ -71,9 +73,9 @@
       background-color: var(--accent); color: #000;
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
-
-    .intro-actions {
-      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; align-self: flex-start;
+    
+    .intro-actions { 
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; align-self: flex-start; 
     }
     .intro-actions .intro-btn { margin-top: 0; padding: 10px 18px; font-size: 13px; }
 
@@ -83,7 +85,7 @@
       text-align: right; background-color: var(--panel); padding: 10px 20px;
       border-radius: 10px; font-size: 14px; line-height: 1.5;
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-      transform: translateZ(0); will-change: backdrop-filter;
+      will-change: backdrop-filter;
       opacity: 0; visibility: hidden; transform: translateY(-8px) translateZ(0);
       transition: all 0.4s ease; pointer-events: none; z-index: 50;
     }
@@ -138,7 +140,8 @@
     .project-btn:focus-visible,
     .intro-btn:focus-visible,
     .close-btn:focus-visible,
-    .back-btn:focus-visible {
+    .back-btn:focus-visible,
+    .retry-btn:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
@@ -236,9 +239,25 @@
     .essay-header .modal-title { margin-bottom: 5px; }
     .modal-hint { font-size: 13px; color: #aaa; }
 
-    /* ========== 空状态 ========== */
+    /* ========== 空状态 & 错误状态 & 重试按钮 ========== */
     .essay-empty, .essay-error { color: #888; text-align: center; font-size: 16px; padding: 40px 0; margin: 0; }
-    .essay-error { color: #ff8a80; }
+    .essay-error { color: #ff8a80; padding-bottom: 15px; }
+    
+    .error-container {
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      width: 100%; padding: 40px 0;
+    }
+    
+    .retry-btn {
+      padding: 10px 24px;
+      background-color: transparent; color: var(--accent); border: 1px solid var(--accent);
+      border-radius: 8px; font-family: inherit; font-size: 14px; font-weight: bold; cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .retry-btn:hover {
+      background-color: var(--accent); color: #000;
+      box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
+    }
 
     /* ========== 详情页（随笔和创意工坊共用样式） ========== */
     .essay-detail-view {
@@ -325,7 +344,7 @@
       text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
     }
 
-    /* 看板娘尺寸放大到 90px */
+    /* 看板娘尺寸 */
     .moe-counter-img {
       height: 90px;
       margin-top: 10px;
@@ -424,6 +443,8 @@
   </div>
 
   <div class="projects">
+    <!-- 音乐馆入口 -->
+    <button id="go-to-music" class="project-btn" type="button">🎵 音乐馆</button>
     <!-- 创意工坊入口 -->
     <button id="open-works" class="project-btn" type="button">🛠️ 创意工坊</button>
     <button id="open-essays" class="project-btn" type="button">📝 随笔手记</button>
@@ -718,7 +739,34 @@
       });
 
       /* ============================================================
-         三、通用工具（统一 XSS 防护出口）
+         三、渐弱跳转音乐馆
+         ============================================================ */
+      let leavingToMusic = false; // 防止连点触发多次渐弱/跳转
+
+      document.getElementById('go-to-music').addEventListener('click', () => {
+        if (leavingToMusic) return;
+        leavingToMusic = true;
+
+        // 如果 BGM 正在播放，执行渐弱
+        if (!bgm.paused) {
+          let vol = bgm.volume;
+          const fadeOut = setInterval(() => {
+            if (vol > 0.05) {
+              vol -= 0.05;
+              bgm.volume = vol;
+            } else {
+              clearInterval(fadeOut);
+              bgm.pause();
+              window.location.href = 'music.html'; // 跳转
+            }
+          }, 50); // 50ms 减一次，总共约0.5秒渐弱
+        } else {
+          window.location.href = 'music.html';
+        }
+      });
+
+      /* ============================================================
+         四、通用工具（统一 XSS 防护出口）
          ============================================================ */
 
       function normalizeUrl(raw) {
@@ -751,8 +799,9 @@
        * 唯一富文本净化入口。
        * - 非白名单标签：降级为纯文本（textContent），不保留任何子结构
        * - 白名单标签：递归清洗属性、处理 A 的 href
+       * 返回值：DocumentFragment（避免「序列化后再 innerHTML 解析」的 mXSS 风险）
        */
-      function sanitizeHtml(html) {
+      function sanitizeToFragment(html) {
         const template = document.createElement('template');
         template.innerHTML = String(html ?? '');
 
@@ -792,7 +841,7 @@
         }
 
         Array.from(template.content.childNodes).forEach(cleanNode);
-        return template.innerHTML;
+        return template.content;
       }
 
       // 纯文本写入（默认出口）
@@ -800,9 +849,9 @@
         if (el) el.textContent = String(text ?? '');
       }
 
-      // 富文本写入（唯一 innerHTML 出口）
+      // 富文本写入（唯一 innerHTML 相关出口）
       function setSanitizedHtml(el, html) {
-        if (el) el.innerHTML = sanitizeHtml(html);
+        if (el) el.replaceChildren(sanitizeToFragment(html));
       }
 
       async function fetchJson(url) {
@@ -820,8 +869,37 @@
         }
       }
 
+      // 统一错误渲染 + 重试按钮
+      function renderError(container, message, retryCallback) {
+        container.replaceChildren();
+        const wrap = document.createElement('div');
+        wrap.className = 'error-container';
+
+        const p = document.createElement('p');
+        p.className = 'essay-error';
+        p.textContent = message;
+
+        const btn = document.createElement('button');
+        btn.className = 'retry-btn';
+        btn.type = 'button';
+        btn.textContent = '🔄 重新加载';
+        btn.addEventListener('click', () => {
+          // 点击后先显示加载中提示，防止用户连点
+          container.replaceChildren();
+          const loading = document.createElement('p');
+          loading.className = 'essay-empty';
+          loading.textContent = '正在重新加载...';
+          container.appendChild(loading);
+          
+          retryCallback();
+        });
+
+        wrap.append(p, btn);
+        container.appendChild(wrap);
+      }
+
       /* ============================================================
-         四、弹窗统一管理（ModalManager）
+         五、弹窗统一管理（ModalManager）
          ============================================================ */
 
       const pageRegions = [
@@ -989,7 +1067,7 @@
       const modalManager = new ModalManager(pageRegions);
 
       /* ============================================================
-         五、数据统计模块加载
+         六、数据统计模块加载
          ============================================================ */
       function calculateDays() {
         const startDate = new Date('2026-10-19T00:00:00');
@@ -1015,7 +1093,7 @@
       loadConfig();
 
       /* ============================================================
-         六、自我介绍模块
+         七、自我介绍模块
          ============================================================ */
       const introModal = document.getElementById('intro-modal');
       let introLoaded = false;
@@ -1025,19 +1103,23 @@
         try {
           if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
           const data = await fetchJson('intro.json');
-          setSanitizedHtml(introArea, data?.content ?? '');
+          // 校验数据结构，避免格式错误时页面静默空白
+          if (!data || typeof data !== 'object' || typeof data.content !== 'string') {
+            throw new Error('intro.json 格式不正确（应为 { "content": "..." }）');
+          }
+          setSanitizedHtml(introArea, data.content);
+          introLoaded = true;
         } catch (err) {
           console.error('加载自我介绍失败：', err);
           introLoaded = false;
-          introArea.replaceChildren();
-          const p = document.createElement('p');
-          p.textContent = '数据加载失败，请稍后再试。';
-          introArea.appendChild(p);
+          renderError(introArea, `数据加载失败：${err.message}`, () => {
+            loadIntro();
+          });
         }
       }
 
       /* ============================================================
-         七、创意工坊模块
+         八、创意工坊模块
          ============================================================ */
       const worksModal = document.getElementById('works-modal');
       const catalogModal = document.getElementById('catalog-modal');
@@ -1075,7 +1157,7 @@
           const h3 = document.createElement('h3');
           setText(h3, title);
 
-          const chapterCount = work.chapters ? work.chapters.length : 0;
+          const chapterCount = Array.isArray(work.chapters) ? work.chapters.length : 0;
           const span = document.createElement('span');
           span.className = 'essay-date';
           setText(span, `共 ${chapterCount} 个章节`);
@@ -1108,11 +1190,10 @@
         } catch (err) {
           console.error('加载工坊失败：', err);
           worksLoaded = false;
-          worksListContainer.replaceChildren();
-          const p = document.createElement('p');
-          p.className = 'essay-error';
-          p.textContent = `数据加载失败：${err.message}`;
-          worksListContainer.appendChild(p);
+          renderError(worksListContainer, `数据加载失败：${err.message}`, () => {
+            worksLoaded = true;
+            loadWorks();
+          });
         }
       }
 
@@ -1123,7 +1204,7 @@
         catalogTitle.textContent = `${work.title || '无标题'} - 目录`;
         catalogListContainer.replaceChildren();
 
-        if (!work.chapters || !work.chapters.length) {
+        if (!Array.isArray(work.chapters) || !work.chapters.length) {
           const p = document.createElement('p');
           p.className = 'essay-empty';
           p.textContent = '这部作品还没有添加章节。';
@@ -1180,7 +1261,7 @@
       }
 
       /* ============================================================
-         八、随笔模块
+         九、随笔模块
          ============================================================ */
       const essayModal = document.getElementById('essay-modal');
       const listContainer = document.getElementById('essay-list-container');
@@ -1258,16 +1339,15 @@
         } catch (err) {
           console.error('加载随笔失败：', err);
           essaysLoaded = false;
-          listContainer.replaceChildren();
-          const p = document.createElement('p');
-          p.className = 'essay-error';
-          p.textContent = `数据加载失败：${err.message}`;
-          listContainer.appendChild(p);
+          renderError(listContainer, `数据加载失败：${err.message}`, () => {
+            essaysLoaded = true;
+            loadEssays();
+          });
         }
       }
 
       /* ============================================================
-         九、友情链接模块
+         十、友情链接模块
          ============================================================ */
       const linksModal = document.getElementById('links-modal');
       const linksContainer = document.getElementById('links-container');
@@ -1333,16 +1413,15 @@
         } catch (err) {
           console.error('加载友链失败：', err);
           linksLoaded = false;
-          linksContainer.replaceChildren();
-          const p = document.createElement('p');
-          p.className = 'essay-error';
-          p.textContent = `友链数据加载失败：${err.message}`;
-          linksContainer.appendChild(p);
+          renderError(linksContainer, `友链数据加载失败：${err.message}`, () => {
+            linksLoaded = true;
+            loadLinks();
+          });
         }
       }
 
       /* ============================================================
-         十、UI 交互 + 懒加载接入（统一调用 ModalManager）
+         十一、UI 交互 + 懒加载接入（统一调用 ModalManager）
          ============================================================ */
       document.getElementById('open-essays').addEventListener('click', (e) => {
         modalManager.open(essayModal, { trigger: e.currentTarget });
@@ -1391,7 +1470,7 @@
       });
 
       /* ============================================================
-         十一、自定义主题色模块
+         十二、自定义主题色模块
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
