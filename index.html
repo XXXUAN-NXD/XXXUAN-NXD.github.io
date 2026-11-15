@@ -34,7 +34,7 @@
     .content {
       position: absolute;
       top: 0; left: 0; height: 100vh; height: 100dvh; width: 30vw; max-width: 400px;
-      padding: 30px 40px 80px 40px; 
+      padding: 30px 40px 80px 40px;
       background-color: var(--panel);
       backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
       transform: translateZ(0); will-change: backdrop-filter;
@@ -71,9 +71,9 @@
       background-color: var(--accent); color: #000;
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.4);
     }
-    
-    .intro-actions { 
-      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; align-self: flex-start; 
+
+    .intro-actions {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; align-self: flex-start;
     }
     .intro-actions .intro-btn { margin-top: 0; padding: 10px 18px; font-size: 13px; }
 
@@ -219,15 +219,15 @@
       box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2); transform: translateY(-3px);
     }
     .friend-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-    
+
     .friend-info { display: flex; flex-direction: column; gap: 6px; }
     .friend-name { font-size: 18px; font-weight: bold; color: var(--accent); }
-    .friend-url { 
-      font-size: 12px; 
-      color: #ccc; 
+    .friend-url {
+      font-size: 12px;
+      color: #ccc;
       text-shadow: 0 1px 2px rgba(0,0,0,0.8);
-      font-family: 'Courier New', monospace; 
-      word-break: break-all; 
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
     }
     .friend-desc { font-size: 14px; color: #ccc; text-align: right; margin-left: 20px; }
 
@@ -240,7 +240,7 @@
     .essay-empty, .essay-error { color: #888; text-align: center; font-size: 16px; padding: 40px 0; margin: 0; }
     .essay-error { color: #ff8a80; }
 
-    /* ========== 随笔详情页 ========== */
+    /* ========== 详情页（随笔和创意工坊共用样式） ========== */
     .essay-detail-view {
       display: none; position: fixed; inset: 0;
       background: transparent;
@@ -274,14 +274,14 @@
 
     .detail-scroll-body { padding: 10px 30px 30px 30px; }
     .detail-content { width: 100%; max-width: 700px; margin: 0 auto; padding-top: 20px; }
-    #detail-title { color: #fff; margin-top: 0; font-size: 28px; line-height: 1.4; overflow-wrap: anywhere; }
+    #detail-title, #work-chapter-title { color: #fff; margin-top: 0; font-size: 28px; line-height: 1.4; overflow-wrap: anywhere; }
     .detail-body { color: #ddd; line-height: 2; font-size: 17px; margin-top: 30px; text-align: justify; overflow-wrap: break-word; }
 
     /* ========== 自我介绍正文 ========== */
     .intro-body { color: #ddd; line-height: 2; text-align: justify; }
     .intro-body p { font-size: 17px; line-height: 2; margin-top: 0; }
 
-    /* ========== 👇 终端监控面板优化版 ========== */
+    /* ========== 终端监控面板 ========== */
     .terminal-panel {
       background: rgba(0, 0, 0, 0.5);
       border: 1px solid rgba(var(--accent-rgb), 0.4);
@@ -299,17 +299,16 @@
     }
     .terminal-row:last-child {
       border-bottom: none;
-      align-items: flex-end; /* 访客图片大，底部对齐会好看点 */
+      align-items: flex-end;
     }
-    
-    /* 👇 新增：左侧信息包裹层，方便上下排列文字和小字 */
+
     .term-info {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
     .term-label {
-      color: #ccc; /* 稍微调亮一点，显得更专业 */
+      color: #ccc;
       font-size: 16px;
       letter-spacing: 1px;
     }
@@ -318,17 +317,17 @@
       font-size: 12px;
       letter-spacing: 1px;
     }
-    
+
     .term-value {
       color: var(--accent);
       font-size: 22px;
       font-weight: bold;
       text-shadow: 0 0 10px rgba(var(--accent-rgb), 0.3);
     }
-    
-    /* 👇 修改：把看板娘尺寸放大 */
+
+    /* 看板娘尺寸放大到 90px */
     .moe-counter-img {
-      height: 60px; /* 从 32px 放大到 60px */
+      height: 90px;
       margin-top: 10px;
       border-radius: 6px;
     }
@@ -385,7 +384,7 @@
       .terminal-panel { padding: 20px; }
       .terminal-row { flex-direction: column; align-items: flex-start; gap: 12px; }
       .terminal-row:last-child { align-items: flex-start; }
-      .moe-counter-img { height: 50px; }
+      .moe-counter-img { height: 70px; }
     }
 
     /* ========== 减少动态效果 ========== */
@@ -416,7 +415,7 @@
 
     <h1>欢迎回来！</h1>
     <p>该网站用于编程技能学习及测试，以及顺带的个性展示和小功能<br>由 XXXUAN 搭建。</p>
-    
+
     <div class="intro-actions">
       <button id="open-intro" class="intro-btn" type="button">👤 关于开发者</button>
       <button id="open-links" class="intro-btn" type="button">🔗 友情链接</button>
@@ -425,6 +424,8 @@
   </div>
 
   <div class="projects">
+    <!-- 创意工坊入口 -->
+    <button id="open-works" class="project-btn" type="button">🛠️ 创意工坊</button>
     <button id="open-essays" class="project-btn" type="button">📝 随笔手记</button>
   </div>
 
@@ -454,9 +455,8 @@
     </div>
     <div class="modal-scroll-body">
       <div class="essay-content essay-content--narrow">
-        
+
         <div class="terminal-panel">
-          <!-- 👇 修改1：加入小字说明 -->
           <div class="terminal-row">
             <div class="term-info">
               <span class="term-label">> 系统启动天数 (UPTIME)</span>
@@ -464,15 +464,14 @@
             </div>
             <span class="term-value" id="stat-days">-- DAYS</span>
           </div>
-          
+
           <div class="terminal-row">
             <div class="term-info">
               <span class="term-label">> 核心版本号 (VERSION)</span>
             </div>
             <span class="term-value" id="stat-version">v1.0.0</span>
           </div>
-          
-          <!-- 👇 修改2：加入小字说明，并放大看板娘 -->
+
           <div class="terminal-row">
             <div class="term-info">
               <span class="term-label">> 访客记录 (VISITORS)</span>
@@ -502,6 +501,38 @@
     </div>
   </div>
 
+  <!-- ========== 创意工坊画廊弹窗（第一层） ========== -->
+  <div id="works-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="works-title" aria-hidden="true">
+    <div class="essay-header">
+      <div class="modal-title-group">
+        <h2 id="works-title" class="modal-title">创意工坊 —— 幻想的无限延伸</h2>
+        <span class="modal-hint">💡 收录我的二创、小说与随笔集</span>
+      </div>
+      <button id="close-works" class="close-btn" type="button" aria-label="关闭">&times;</button>
+    </div>
+    <div class="modal-scroll-body">
+      <div class="essay-content" id="works-list-container">
+        <p class="essay-empty">正在加载作品...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== 创意工坊目录弹窗（第二层） ========== -->
+  <div id="catalog-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="catalog-title" aria-hidden="true">
+    <div class="essay-header">
+      <div class="modal-title-group">
+        <h2 id="catalog-title" class="modal-title">目录</h2>
+        <span class="modal-hint">💡 点击章节阅读正文</span>
+      </div>
+      <button id="close-catalog" class="close-btn" type="button" aria-label="关闭">&times;</button>
+    </div>
+    <div class="modal-scroll-body">
+      <div class="essay-content" id="catalog-list-container">
+        <!-- 章节卡片由 JS 生成 -->
+      </div>
+    </div>
+  </div>
+
   <!-- ========== 随笔列表弹窗 ========== -->
   <div id="essay-modal" class="essay-modal" role="dialog" aria-modal="true" aria-labelledby="essay-title" aria-hidden="true">
     <div class="essay-header">
@@ -518,10 +549,10 @@
     </div>
   </div>
 
-  <!-- ========== 随笔详情页 ========== -->
+  <!-- ========== 通用详情页（三层，供随笔和工坊共用） ========== -->
   <div id="essay-detail-view" class="essay-detail-view" role="dialog" aria-modal="true" aria-labelledby="detail-title" aria-hidden="true">
     <div class="detail-header">
-      <button class="back-btn" type="button">← 返回列表</button>
+      <button class="back-btn" id="detail-back-btn" type="button">← 返回上一级</button>
     </div>
     <div class="detail-scroll-body">
       <div class="detail-content">
@@ -561,9 +592,9 @@
 
       function updateClock() {
         const now = new Date();
-        let h = now.getHours();
-        let m = now.getMinutes();
-        let s = now.getSeconds();
+        const h = now.getHours();
+        const m = now.getMinutes();
+        const s = now.getSeconds();
         let displayH = h;
         let text = "";
 
@@ -579,7 +610,7 @@
           text = "日暮而息——欢迎取回你的时间……或者还有事要忙？";
         }
 
-        let displayDate = new Date(now);
+        const displayDate = new Date(now);
         if (h < 4) {
           displayDate.setDate(displayDate.getDate() - 1);
         }
@@ -687,34 +718,41 @@
       });
 
       /* ============================================================
-         三、通用工具
+         三、通用工具（统一 XSS 防护出口）
          ============================================================ */
-      const escapeHtml = (str) => String(str ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
-      
+
       function normalizeUrl(raw) {
         if (typeof raw !== 'string' || !raw.trim()) return null;
         try {
           const u = new URL(raw.trim(), location.href);
           if (u.protocol !== 'http:' && u.protocol !== 'https:') return null;
+          // 禁止带用户名密码，降低钓鱼风险
+          if (u.username || u.password) return null;
           return u.href;
-        } catch { return null; }
+        } catch {
+          return null;
+        }
       }
 
+      // 富文本白名单：预设 <br> 等换行 & 常用排版标签
+      const SANITIZE_ALLOWED_TAGS = new Set([
+        'P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'S',
+        'A', 'UL', 'OL', 'LI',
+        'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+        'BLOCKQUOTE', 'CODE', 'PRE', 'SPAN', 'DIV', 'HR',
+        'SUB', 'SUP', 'MARK', 'DEL', 'INS'
+      ]);
+      // 默认不允许任何属性；只有 A 标签保留有限的几个
+      const SANITIZE_TAG_ATTRS = {
+        'A': new Set(['href', 'title', 'target', 'rel'])
+      };
+
       /**
-       * 白名单 sanitizer：用于把 intro.json 的 HTML 安全地注入页面。
+       * 唯一富文本净化入口。
+       * - 非白名单标签：降级为纯文本（textContent），不保留任何子结构
+       * - 白名单标签：递归清洗属性、处理 A 的 href
        */
       function sanitizeHtml(html) {
-        const ALLOWED_TAGS = new Set([
-          'P', 'BR', 'STRONG', 'B', 'EM', 'I', 'U', 'S',
-          'A', 'UL', 'OL', 'LI',
-          'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
-          'BLOCKQUOTE', 'CODE', 'PRE', 'SPAN', 'DIV', 'HR'
-        ]);
-        const COMMON_ATTRS = new Set(['class']);
-        const TAG_ATTRS = {
-          'A': new Set(['class', 'href', 'title', 'target', 'rel'])
-        };
-
         const template = document.createElement('template');
         template.innerHTML = String(html ?? '');
 
@@ -723,15 +761,17 @@
           if (node.nodeType !== Node.ELEMENT_NODE) { node.remove(); return; }
 
           const tag = node.tagName;
-          if (!ALLOWED_TAGS.has(tag)) {
+          if (!SANITIZE_ALLOWED_TAGS.has(tag)) {
             const text = document.createTextNode(node.textContent || '');
             node.replaceWith(text);
             return;
           }
 
-          const allowedAttrs = TAG_ATTRS[tag] || COMMON_ATTRS;
+          const allowedAttrs = SANITIZE_TAG_ATTRS[tag] || new Set();
           for (const attr of Array.from(node.attributes)) {
-            if (!allowedAttrs.has(attr.name)) node.removeAttribute(attr.name);
+            if (!allowedAttrs.has(attr.name.toLowerCase())) {
+              node.removeAttribute(attr.name);
+            }
           }
 
           if (tag === 'A') {
@@ -743,7 +783,9 @@
             }
             node.setAttribute('href', safeHref);
             node.setAttribute('rel', 'noopener noreferrer');
-            if (node.getAttribute('target') !== '_blank') node.removeAttribute('target');
+            if (node.getAttribute('target') !== '_blank') {
+              node.removeAttribute('target');
+            }
           }
 
           Array.from(node.childNodes).forEach(cleanNode);
@@ -751,6 +793,16 @@
 
         Array.from(template.content.childNodes).forEach(cleanNode);
         return template.innerHTML;
+      }
+
+      // 纯文本写入（默认出口）
+      function setText(el, text) {
+        if (el) el.textContent = String(text ?? '');
+      }
+
+      // 富文本写入（唯一 innerHTML 出口）
+      function setSanitizedHtml(el, html) {
+        if (el) el.innerHTML = sanitizeHtml(html);
       }
 
       async function fetchJson(url) {
@@ -769,13 +821,9 @@
       }
 
       /* ============================================================
-         四、弹窗统一管理
+         四、弹窗统一管理（ModalManager）
          ============================================================ */
-      const introModal = document.getElementById('intro-modal');
-      const statsModal = document.getElementById('stats-modal'); 
-      const linksModal = document.getElementById('links-modal');
-      const essayModal = document.getElementById('essay-modal');
-      const detailView = document.getElementById('essay-detail-view');
+
       const pageRegions = [
         document.querySelector('.content'),
         document.querySelector('.projects'),
@@ -783,94 +831,162 @@
         document.querySelector('.color-picker-wrap')
       ].filter(Boolean);
 
-      const supportsInert = 'inert' in HTMLElement.prototype;
-      function applyInert(el, value) {
-        if (supportsInert) {
-          el.inert = value;
-        } else {
-          if (value) {
-            el.setAttribute('aria-hidden', 'true');
-            el.style.pointerEvents = 'none';
-          } else {
-            el.removeAttribute('aria-hidden');
-            el.style.pointerEvents = '';
-          }
-        }
-      }
-
-      const isMobileViewport = () => window.matchMedia('(max-width: 820px)').matches;
-      let savedScrollY = 0;
-
-      function syncPageState() {
-        const detailOpen = detailView.classList.contains('is-open');
-        const anyOpen = [introModal, statsModal, linksModal, essayModal, detailView].some(el => el.classList.contains('is-open'));
-        const wasLocked = document.body.classList.contains('modal-open');
-
-        pageRegions.forEach(el => applyInert(el, anyOpen));
-        applyInert(essayModal, detailOpen);
-        essayModal.setAttribute('aria-modal', detailOpen ? 'false' : 'true');
-
-        if (anyOpen && !wasLocked) {
-          if (isMobileViewport()) {
-            savedScrollY = window.scrollY || window.pageYOffset || 0;
-            document.body.style.top = `-${savedScrollY}px`;
-          }
-          document.body.classList.add('modal-open');
-        } else if (!anyOpen && wasLocked) {
-          document.body.classList.remove('modal-open');
-          document.body.style.top = '';
-          if (isMobileViewport()) {
-            window.scrollTo(0, savedScrollY);
-          }
-        } else {
-          document.body.classList.toggle('modal-open', anyOpen);
-        }
-      }
-
       const FOCUSABLE_SELECTOR = 'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
       function getFocusable(container) {
         return Array.from(container.querySelectorAll(FOCUSABLE_SELECTOR))
           .filter(el => el.offsetParent !== null || el === document.activeElement);
       }
-      function trapFocus(modal, e) {
+
+      function trapFocus(container, e) {
         if (e.key !== 'Tab') return;
-        const items = getFocusable(modal);
+        const items = getFocusable(container);
         if (!items.length) return;
         const first = items[0];
         const last = items[items.length - 1];
         const active = document.activeElement;
         if (e.shiftKey) {
-          if (active === first || !modal.contains(active)) {
+          if (active === first || !container.contains(active)) {
             e.preventDefault(); last.focus();
           }
         } else {
-          if (active === last || !modal.contains(active)) {
+          if (active === last || !container.contains(active)) {
             e.preventDefault(); first.focus();
           }
         }
       }
 
-      function openModalEl(modal, trigger) {
-        modal._lastTrigger = trigger || document.activeElement;
-        modal.classList.add('is-open'); modal.setAttribute('aria-hidden', 'false');
-        syncPageState();
-        requestAnimationFrame(() => {
-          modal.scrollTop = 0;
-          const target = modal.querySelector('.close-btn, .back-btn') || modal.querySelector('button, [href], [tabindex]:not([tabindex="-1"])');
-          target?.focus({ preventScroll: true });
-        });
-      }
+      class ModalManager {
+        constructor(regions) {
+          this.regions = regions;
+          this.stack = []; // { el, trigger, backLabel }
+          this.savedScrollY = 0;
+          this.supportsInert = 'inert' in HTMLElement.prototype;
+        }
 
-      function closeModalEl(modal) {
-        if (!modal.classList.contains('is-open')) return;
-        const t = modal._lastTrigger;
-        modal.classList.remove('is-open');
-        modal.setAttribute('aria-hidden', 'true');
-        syncPageState();
-        if (t && document.contains(t) && typeof t.focus === 'function') {
-          t.focus({ preventScroll: true });
+        get top() {
+          return this.stack.length ? this.stack[this.stack.length - 1] : null;
+        }
+
+        get depth() {
+          return this.stack.length;
+        }
+
+        isOpen(el) {
+          return this.stack.some(s => s.el === el);
+        }
+
+        _applyInert(el, value) {
+          if (this.supportsInert) {
+            el.inert = value;
+          } else {
+            if (value) {
+              el.setAttribute('aria-hidden', 'true');
+              el.style.pointerEvents = 'none';
+            } else {
+              el.removeAttribute('aria-hidden');
+              el.style.pointerEvents = '';
+            }
+          }
+        }
+
+        _isMobile() {
+          return window.matchMedia('(max-width: 820px)').matches;
+        }
+
+        _sync() {
+          const anyOpen = this.depth > 0;
+
+          // 页面主区域：只要有任何弹窗打开就 inert
+          this.regions.forEach(el => this._applyInert(el, anyOpen));
+
+          // 栈中除栈顶外的所有 modal：inert
+          this.stack.forEach((s, idx) => {
+            this._applyInert(s.el, idx < this.stack.length - 1);
+          });
+
+          // 滚动锁定
+          const locked = document.body.classList.contains('modal-open');
+          if (anyOpen && !locked) {
+            if (this._isMobile()) {
+              this.savedScrollY = window.scrollY || window.pageYOffset || 0;
+              document.body.style.top = `-${this.savedScrollY}px`;
+            }
+            document.body.classList.add('modal-open');
+          } else if (!anyOpen && locked) {
+            document.body.classList.remove('modal-open');
+            document.body.style.top = '';
+            if (this._isMobile()) {
+              window.scrollTo(0, this.savedScrollY);
+            }
+          }
+        }
+
+        /**
+         * 打开弹窗并入栈。
+         * @param {HTMLElement} el 目标弹窗元素
+         * @param {{ trigger?: HTMLElement, backLabel?: string }} opts
+         */
+        open(el, opts = {}) {
+          if (!el || this.isOpen(el)) return;
+
+          const entry = {
+            el,
+            trigger: opts.trigger || document.activeElement,
+            backLabel: opts.backLabel || null
+          };
+
+          // detail 视图：动态更新返回按钮文字
+          if (entry.backLabel) {
+            const backBtn = el.querySelector('.back-btn');
+            if (backBtn) backBtn.textContent = entry.backLabel;
+          }
+
+          this.stack.push(entry);
+          el.classList.add('is-open');
+          el.setAttribute('aria-hidden', 'false');
+          this._sync();
+
+          requestAnimationFrame(() => {
+            el.scrollTop = 0;
+            // 优先返回按钮，其次关闭按钮
+            const target =
+              el.querySelector('.back-btn') ||
+              el.querySelector('.close-btn') ||
+              el.querySelector('button, [href]');
+            target?.focus({ preventScroll: true });
+          });
+        }
+
+        close(el) {
+          const idx = this.stack.findIndex(s => s.el === el);
+          if (idx === -1) return;
+
+          const isTop = idx === this.stack.length - 1;
+          const [entry] = this.stack.splice(idx);
+
+          el.classList.remove('is-open');
+          el.setAttribute('aria-hidden', 'true');
+          this._sync();
+
+          if (isTop) {
+            if (entry.trigger && document.contains(entry.trigger) && typeof entry.trigger.focus === 'function') {
+              entry.trigger.focus({ preventScroll: true });
+            }
+          } else if (this.top) {
+            // 非栈顶被移除时，焦点回到新的栈顶
+            const newTop = this.top.el;
+            const target = newTop.querySelector('.back-btn, .close-btn');
+            target?.focus({ preventScroll: true });
+          }
+        }
+
+        closeTop() {
+          if (this.top) this.close(this.top.el);
         }
       }
+
+      const modalManager = new ModalManager(pageRegions);
 
       /* ============================================================
          五、数据统计模块加载
@@ -890,7 +1006,7 @@
         try {
           const data = await fetchJson('config.json');
           if (data && data.version) {
-            document.getElementById('stat-version').textContent = 'v' + data.version;
+            document.getElementById('stat-version').textContent = 'v' + String(data.version);
           }
         } catch (err) {
           console.error('加载版本号失败：', err);
@@ -901,81 +1017,234 @@
       /* ============================================================
          六、自我介绍模块
          ============================================================ */
+      const introModal = document.getElementById('intro-modal');
       let introLoaded = false;
+
       async function loadIntro() {
         const introArea = document.getElementById('intro-content-area');
         try {
           if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
           const data = await fetchJson('intro.json');
-          if (data && data.content) {
-            introArea.innerHTML = sanitizeHtml(data.content);
-          }
+          setSanitizedHtml(introArea, data?.content ?? '');
         } catch (err) {
           console.error('加载自我介绍失败：', err);
-          introLoaded = false; 
-          introArea.innerHTML = '<p>数据加载失败，请稍后再试。</p>';
+          introLoaded = false;
+          introArea.replaceChildren();
+          const p = document.createElement('p');
+          p.textContent = '数据加载失败，请稍后再试。';
+          introArea.appendChild(p);
         }
       }
 
       /* ============================================================
-         七、随笔模块
+         七、创意工坊模块
          ============================================================ */
+      const worksModal = document.getElementById('works-modal');
+      const catalogModal = document.getElementById('catalog-modal');
+      const detailView = document.getElementById('essay-detail-view');
+      const detailBackBtn = document.getElementById('detail-back-btn');
+      const worksListContainer = document.getElementById('works-list-container');
+      const catalogListContainer = document.getElementById('catalog-list-container');
+      const catalogTitle = document.getElementById('catalog-title');
+
+      let worksData = [];
+      let worksLoaded = false;
+
+      function renderWorks() {
+        worksListContainer.replaceChildren();
+
+        if (!worksData.length) {
+          const p = document.createElement('p');
+          p.className = 'essay-empty';
+          p.textContent = '这里还空空如也……';
+          worksListContainer.appendChild(p);
+          return;
+        }
+
+        const frag = document.createDocumentFragment();
+
+        worksData.forEach((work, index) => {
+          const card = document.createElement('div');
+          card.className = 'essay-card';
+          card.setAttribute('role', 'button');
+          card.setAttribute('tabindex', '0');
+
+          const title = String(work.title || '无标题');
+          card.setAttribute('aria-label', `查看作品：${title}`);
+
+          const h3 = document.createElement('h3');
+          setText(h3, title);
+
+          const chapterCount = work.chapters ? work.chapters.length : 0;
+          const span = document.createElement('span');
+          span.className = 'essay-date';
+          setText(span, `共 ${chapterCount} 个章节`);
+
+          const p = document.createElement('p');
+          setText(p, work.summary || '');
+
+          card.append(h3, span, p);
+          card.addEventListener('click', () => openCatalog(index, card));
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openCatalog(index, card);
+            }
+          });
+
+          frag.appendChild(card);
+        });
+
+        worksListContainer.appendChild(frag);
+      }
+
+      async function loadWorks() {
+        try {
+          if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
+          const data = await fetchJson('works.json');
+          if (!Array.isArray(data)) throw new Error('JSON 顶层必须是数组');
+          worksData = data.filter(item => item && typeof item === 'object' && !Array.isArray(item));
+          renderWorks();
+        } catch (err) {
+          console.error('加载工坊失败：', err);
+          worksLoaded = false;
+          worksListContainer.replaceChildren();
+          const p = document.createElement('p');
+          p.className = 'essay-error';
+          p.textContent = `数据加载失败：${err.message}`;
+          worksListContainer.appendChild(p);
+        }
+      }
+
+      function openCatalog(workIndex, triggerEl) {
+        const work = worksData[workIndex];
+        if (!work) return;
+
+        catalogTitle.textContent = `${work.title || '无标题'} - 目录`;
+        catalogListContainer.replaceChildren();
+
+        if (!work.chapters || !work.chapters.length) {
+          const p = document.createElement('p');
+          p.className = 'essay-empty';
+          p.textContent = '这部作品还没有添加章节。';
+          catalogListContainer.appendChild(p);
+        } else {
+          const frag = document.createDocumentFragment();
+
+          work.chapters.forEach((chapter) => {
+            const card = document.createElement('div');
+            card.className = 'essay-card';
+            card.setAttribute('role', 'button');
+            card.setAttribute('tabindex', '0');
+
+            const chapterTitle = String(chapter.title || '无标题');
+            card.setAttribute('aria-label', `阅读章节：${chapterTitle}`);
+
+            const h3 = document.createElement('h3');
+            setText(h3, chapterTitle);
+
+            const date = document.createElement('span');
+            date.className = 'essay-date';
+            setText(date, chapter.date || '');
+
+            card.append(h3, date);
+            card.addEventListener('click', () => openWorkDetail(chapter, work.title, card));
+            card.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openWorkDetail(chapter, work.title, card);
+              }
+            });
+
+            frag.appendChild(card);
+          });
+
+          catalogListContainer.appendChild(frag);
+        }
+
+        modalManager.open(catalogModal, { trigger: triggerEl });
+      }
+
+      function openWorkDetail(chapter, workTitle, triggerEl) {
+        setText(document.getElementById('detail-title'), chapter.title || '无标题');
+        setText(
+          document.getElementById('detail-date'),
+          `${chapter.date || ''} | 所属作品：${workTitle}`
+        );
+        setSanitizedHtml(document.getElementById('detail-body'), chapter.content || '');
+
+        modalManager.open(detailView, {
+          trigger: triggerEl,
+          backLabel: '← 返回目录'
+        });
+      }
+
+      /* ============================================================
+         八、随笔模块
+         ============================================================ */
+      const essayModal = document.getElementById('essay-modal');
       const listContainer = document.getElementById('essay-list-container');
-      const detailTitle = document.getElementById('detail-title');
-      const detailDate = document.getElementById('detail-date');
-      const detailBody = document.getElementById('detail-body');
-      const backBtn = detailView.querySelector('.back-btn');
       let essaysData = [];
       let essaysLoaded = false;
-
-      function renderRichText(text) {
-        return escapeHtml(text).replace(/&lt;br\s*\/?&gt;/gi, '<br>').replace(/\r\n?|\n/g, '<br>');
-      }
 
       function openEssayDetail(index, triggerEl) {
         const essay = essaysData[index];
         if (!essay) return;
-        detailTitle.textContent = essay.title || '无标题';
-        detailDate.textContent = essay.date || '';
-        detailBody.innerHTML = renderRichText(essay.content);
-        detailView._lastTrigger = triggerEl || document.activeElement;
-        detailView.classList.add('is-open'); detailView.setAttribute('aria-hidden', 'false');
-        syncPageState();
-        requestAnimationFrame(() => {
-          detailView.scrollTop = 0;
-          backBtn.focus({ preventScroll: true });
-        });
-      }
 
-      function closeEssayDetail() {
-        if (!detailView.classList.contains('is-open')) return;
-        const t = detailView._lastTrigger;
-        detailView.classList.remove('is-open');
-        detailView.setAttribute('aria-hidden', 'true');
-        syncPageState();
-        if (t && essayModal.classList.contains('is-open') && document.contains(t)) {
-          t.focus({ preventScroll: true });
-        }
+        setText(document.getElementById('detail-title'), essay.title || '无标题');
+        setText(document.getElementById('detail-date'), essay.date || '');
+        setSanitizedHtml(document.getElementById('detail-body'), essay.content || '');
+
+        modalManager.open(detailView, {
+          trigger: triggerEl,
+          backLabel: '← 返回列表'
+        });
       }
 
       function renderEssays() {
-        listContainer.innerHTML = '';
+        listContainer.replaceChildren();
+
         if (!essaysData.length) {
-          const p = document.createElement('p'); p.className = 'essay-empty'; p.textContent = '这里还空空如也……'; listContainer.appendChild(p); return;
+          const p = document.createElement('p');
+          p.className = 'essay-empty';
+          p.textContent = '这里还空空如也……';
+          listContainer.appendChild(p);
+          return;
         }
+
         const frag = document.createDocumentFragment();
+
         essaysData.forEach((essay, index) => {
           const card = document.createElement('div');
-          card.className = 'essay-card'; card.setAttribute('role', 'button'); card.setAttribute('tabindex', '0');
-          card.setAttribute('aria-label', `阅读随笔：${essay.title || '无标题'}`);
-          const h3 = document.createElement('h3'); h3.textContent = essay.title || '无标题';
-          const date = document.createElement('span'); date.className = 'essay-date'; date.textContent = essay.date || '';
-          const p = document.createElement('p'); p.textContent = essay.summary || '';
+          card.className = 'essay-card';
+          card.setAttribute('role', 'button');
+          card.setAttribute('tabindex', '0');
+
+          const title = String(essay.title || '无标题');
+          card.setAttribute('aria-label', `阅读随笔：${title}`);
+
+          const h3 = document.createElement('h3');
+          setText(h3, title);
+
+          const date = document.createElement('span');
+          date.className = 'essay-date';
+          setText(date, essay.date || '');
+
+          const p = document.createElement('p');
+          setText(p, essay.summary || '');
+
           card.append(h3, date, p);
           card.addEventListener('click', () => openEssayDetail(index, card));
-          card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEssayDetail(index, card); } });
+          card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              openEssayDetail(index, card);
+            }
+          });
+
           frag.appendChild(card);
         });
+
         listContainer.appendChild(frag);
       }
 
@@ -989,15 +1258,18 @@
         } catch (err) {
           console.error('加载随笔失败：', err);
           essaysLoaded = false;
-          listContainer.innerHTML = '';
-          const p = document.createElement('p'); p.className = 'essay-error'; p.textContent = `数据加载失败：${err.message}`;
+          listContainer.replaceChildren();
+          const p = document.createElement('p');
+          p.className = 'essay-error';
+          p.textContent = `数据加载失败：${err.message}`;
           listContainer.appendChild(p);
         }
       }
 
       /* ============================================================
-         八、友情链接模块
+         九、友情链接模块
          ============================================================ */
+      const linksModal = document.getElementById('links-modal');
       const linksContainer = document.getElementById('links-container');
       let linksLoaded = false;
 
@@ -1005,105 +1277,121 @@
         try {
           if (location.protocol === 'file:') throw new Error('请用 Live Server 或部署到线上。');
           const data = await fetchJson('links.json');
-          linksContainer.innerHTML = '';
+          linksContainer.replaceChildren();
+
           if (!Array.isArray(data) || data.length === 0) {
-            const p = document.createElement('p'); p.className = 'essay-empty'; p.textContent = '这里还空空如也……';
-            linksContainer.appendChild(p); return;
+            const p = document.createElement('p');
+            p.className = 'essay-empty';
+            p.textContent = '这里还空空如也……';
+            linksContainer.appendChild(p);
+            return;
           }
+
           const frag = document.createDocumentFragment();
-          
+
           data.forEach((link) => {
             if (!link || typeof link !== 'object') return;
             const safeUrl = normalizeUrl(link.url);
             if (!safeUrl) return;
-            
+
             const a = document.createElement('a');
-            a.href = safeUrl; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.className = 'friend-link';
-            
+            a.href = safeUrl;
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.className = 'friend-link';
+
             const infoDiv = document.createElement('div');
             infoDiv.className = 'friend-info';
 
-            const nameSpan = document.createElement('span'); 
-            nameSpan.className = 'friend-name'; 
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'friend-name';
             nameSpan.textContent = link.name || '未命名站点';
-            
+
             const urlSpan = document.createElement('span');
             urlSpan.className = 'friend-url';
             urlSpan.textContent = safeUrl;
 
             infoDiv.append(nameSpan, urlSpan);
 
-            const descSpan = document.createElement('span'); 
-            descSpan.className = 'friend-desc'; 
+            const descSpan = document.createElement('span');
+            descSpan.className = 'friend-desc';
             descSpan.textContent = link.desc ? `${link.desc} →` : '访问 →';
-            
-            a.append(infoDiv, descSpan); 
+
+            a.append(infoDiv, descSpan);
             frag.appendChild(a);
           });
-          
+
           if (!frag.childNodes.length) {
-            const p = document.createElement('p'); p.className = 'essay-empty'; p.textContent = '这里还空空如也……';
-            linksContainer.appendChild(p); return;
+            const p = document.createElement('p');
+            p.className = 'essay-empty';
+            p.textContent = '这里还空空如也……';
+            linksContainer.appendChild(p);
+            return;
           }
+
           linksContainer.appendChild(frag);
         } catch (err) {
           console.error('加载友链失败：', err);
           linksLoaded = false;
-          linksContainer.innerHTML = '';
-          const p = document.createElement('p'); p.className = 'essay-error'; p.textContent = `友链数据加载失败：${err.message}`;
+          linksContainer.replaceChildren();
+          const p = document.createElement('p');
+          p.className = 'essay-error';
+          p.textContent = `友链数据加载失败：${err.message}`;
           linksContainer.appendChild(p);
         }
       }
 
       /* ============================================================
-         九、UI 交互 + 懒加载接入
+         十、UI 交互 + 懒加载接入（统一调用 ModalManager）
          ============================================================ */
       document.getElementById('open-essays').addEventListener('click', (e) => {
-        openModalEl(essayModal, e.currentTarget);
+        modalManager.open(essayModal, { trigger: e.currentTarget });
         if (!essaysLoaded) { essaysLoaded = true; loadEssays(); }
       });
-      document.getElementById('close-essay').addEventListener('click', () => {
-        closeModalEl(essayModal);
+      document.getElementById('close-essay').addEventListener('click', () => modalManager.close(essayModal));
+
+      document.getElementById('open-works').addEventListener('click', (e) => {
+        modalManager.open(worksModal, { trigger: e.currentTarget });
+        if (!worksLoaded) { worksLoaded = true; loadWorks(); }
       });
-      backBtn.addEventListener('click', closeEssayDetail);
+      document.getElementById('close-works').addEventListener('click', () => modalManager.close(worksModal));
+      document.getElementById('close-catalog').addEventListener('click', () => modalManager.close(catalogModal));
 
       document.getElementById('open-intro').addEventListener('click', (e) => {
-        openModalEl(introModal, e.currentTarget);
+        modalManager.open(introModal, { trigger: e.currentTarget });
         if (!introLoaded) { introLoaded = true; loadIntro(); }
       });
-      document.getElementById('close-intro').addEventListener('click', () => closeModalEl(introModal));
+      document.getElementById('close-intro').addEventListener('click', () => modalManager.close(introModal));
 
+      const statsModal = document.getElementById('stats-modal');
       document.getElementById('open-stats').addEventListener('click', (e) => {
-        openModalEl(statsModal, e.currentTarget);
+        modalManager.open(statsModal, { trigger: e.currentTarget });
       });
-      document.getElementById('close-stats').addEventListener('click', () => closeModalEl(statsModal));
+      document.getElementById('close-stats').addEventListener('click', () => modalManager.close(statsModal));
 
       document.getElementById('open-links').addEventListener('click', (e) => {
-        openModalEl(linksModal, e.currentTarget);
+        modalManager.open(linksModal, { trigger: e.currentTarget });
         if (!linksLoaded) { linksLoaded = true; loadLinks(); }
       });
-      document.getElementById('close-links').addEventListener('click', () => closeModalEl(linksModal));
+      document.getElementById('close-links').addEventListener('click', () => modalManager.close(linksModal));
 
+      // 详情页返回按钮：关闭栈顶
+      detailBackBtn.addEventListener('click', () => modalManager.closeTop());
+
+      // 全局键盘：Escape 关闭栈顶；Tab 在栈顶内循环
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-          if (detailView.classList.contains('is-open')) { closeEssayDetail(); return; }
-          if (essayModal.classList.contains('is-open')) { closeModalEl(essayModal); return; }
-          if (statsModal.classList.contains('is-open')) { closeModalEl(statsModal); return; }
-          if (introModal.classList.contains('is-open')) { closeModalEl(introModal); return; }
-          if (linksModal.classList.contains('is-open')) { closeModalEl(linksModal); return; }
+          if (modalManager.top) {
+            modalManager.closeTop();
+          }
           return;
         }
-        const activeModal =
-          detailView.classList.contains('is-open') ? detailView :
-          essayModal.classList.contains('is-open') ? essayModal :
-          statsModal.classList.contains('is-open') ? statsModal :
-          introModal.classList.contains('is-open') ? introModal :
-          linksModal.classList.contains('is-open') ? linksModal : null;
-        if (activeModal) trapFocus(activeModal, e);
+        const top = modalManager.top;
+        if (top) trapFocus(top.el, e);
       });
 
       /* ============================================================
-         十、自定义主题色模块
+         十一、自定义主题色模块
          ============================================================ */
       const colorPicker = document.getElementById('theme-color-picker');
       const themeColorMeta = document.querySelector('meta[name="theme-color"]');
