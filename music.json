@@ -67,5 +67,49 @@
         "src": "music/Yumenofuruhini.ogg"
       }
     ]
+  },
+  {
+    "album_name": "日系迷因",
+    "album_cover": "music/riximiyin.jpg",
+    "description": "收录日系流行/动漫歌曲",
+    "copyright": "本专辑音频及图片素材来源于网络，仅供个人编程学习、测试与欣赏使用，请勿用于任何商业用途。",
+    "songs": [
+      {
+        "title": "DEMON'S SHOT",
+        "artist": "AIOBAHN +81 feat. DEMONDICE",
+        "cover": "music/DEMONS-SHOT.webp",  
+        "src": "music/DEMONS-SHOT.ogg"
+      },
+      {
+        "title": "春日影(MyGO!!!!! ver.)",
+        "artist": "MyGO!!!!!",
+        "cover": "music/haruhikagemvgo.webp",  
+        "src": "music/haruhikagemvgo.ogg"
+      },
+      {
+        "title": "インドア系ならトラックメイカー",
+        "artist": "Yunomi",
+        "cover": "music/indoorkeinotrackmaker.webp",  
+        "src": "music/indoorkeinotrackmaker.ogg"
+      },
+      {
+        "title": "恋愛サーキュレーション",
+        "artist": "花澤香菜",
+        "cover": "music/renaicirculation.webp",  
+        "src": "music/renaicirculation.ogg"
+      },
+      {
+        "title": "粛聖!! ロリ神レクイエム☆",
+        "artist": "时雨羽衣",
+        "cover": "music/rorikamirequiem.webp",  
+        "src": "music/rorikamirequiem.ogg"
+      },
+      {
+        "title": "天天天国地獄国",
+        "artist": "Aiobahn +81 feat. ななひら & P丸様",
+        "cover": "music/tttgkjgkkk.webp",  
+        "src": "music/tttgkjgkkk.ogg"
+      }
+    ]
   }
 ]
