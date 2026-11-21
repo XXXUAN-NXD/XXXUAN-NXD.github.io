@@ -77,7 +77,7 @@
   const bgm = document.getElementById('bgm');
   const musicBtn = document.getElementById('music-btn');
   const bgmInfo = document.getElementById('bgm-info');
-  const BGM_TEXT = 'BGM：25時の情熱Inst. -カンザキイオリ ©SEGA';
+  const BGM_TEXT = 'BGM：25時の情熱Inst. -カンザキイオリ ©SEGA / ©Colorful Palette Inc.';
   let bgmToggling = false;
   let bgmErrorTimer = null;
 
