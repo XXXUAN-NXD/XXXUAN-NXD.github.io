@@ -51,9 +51,16 @@
   </div><!-- 滚动容器结束 -->
 </div>
 
-  <!-- 全局底部播放器 -->
+ <!-- 全局底部播放器 -->
   <div class="global-player" id="global-player">
+    <!-- 👇 新增：上一首 -->
+    <button class="mode-btn" id="prev-btn" type="button" title="上一首" aria-label="上一首">⏮</button>
+    
     <button class="player-btn" id="main-play-btn" type="button" aria-label="播放/暂停">▶</button>
+    
+    <!-- 👇 新增：下一首 -->
+    <button class="mode-btn" id="next-btn" type="button" title="下一首" aria-label="下一首">⏭</button>
+    
     <button class="mode-btn" id="play-mode-btn" type="button" title="列表循环" aria-label="切换播放模式">🔁</button>
     <button class="lyric-btn" id="lyric-btn" type="button" title="查看歌词" aria-label="查看歌词" disabled>📝</button>
 
