@@ -22,10 +22,8 @@
 
  <!-- 歌曲列表弹窗 -->
 <div id="songs-modal" class="songs-modal" role="dialog" aria-modal="true" aria-labelledby="modal-album-title" aria-hidden="true">
-  
-  <!-- ① 关闭按钮：留在外面，不动它 -->
+   <!-- ① 关闭按钮：留在外面，不动它 -->
   <button class="close-modal" id="close-songs" type="button" aria-label="关闭歌曲列表">&times;</button>
-  
   <!-- ② 新增一个滚动容器，把原来剩下的所有内容都包进去 -->
   <div class="modal-scroll">
     <div class="modal-header-area">
@@ -41,14 +39,16 @@
 
     <div class="songs-grid" id="songs-container"></div>
   </div><!-- ③ 滚动容器结束 -->
-
 </div>
 
  <!-- 歌词弹窗 -->
 <div id="lyrics-modal" class="lyrics-modal" role="dialog" aria-modal="true" aria-labelledby="lyrics-title" aria-hidden="true">
   <button class="close-modal" id="close-lyrics" type="button" aria-label="关闭歌词">&times;</button>
-  <h2 style="text-align: center; color: var(--accent); margin-bottom: 30px;" id="lyrics-title">歌词</h2>
-  <div class="lyrics-content" id="lyrics-content"></div>
+  <!-- 新增：滚动容器 -->
+  <div class="modal-scroll">
+    <h2 style="text-align: center; color: var(--accent); margin-bottom: 30px;" id="lyrics-title">歌词</h2>
+    <div class="lyrics-content" id="lyrics-content"></div>
+  </div><!-- 滚动容器结束 -->
 </div>
 
   <!-- 全局底部播放器 -->
