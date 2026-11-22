@@ -73,9 +73,12 @@
 
       function checkOverflow(el) {
         if (!el) return;
-        if (el.scrollWidth > el.clientWidth) {
+        const container = el.parentElement; // .marquee-container
+        if (!container) return;
+        // 用父容器的宽度作为可见宽度，el 的 scrollWidth 是内容实际宽度
+        if (el.scrollWidth > container.clientWidth) {
           el.classList.add('is-overflowing');
-          const distance = el.scrollWidth - el.clientWidth;
+          const distance = el.scrollWidth - container.clientWidth;
           el.style.setProperty('--scroll-distance', `-${distance}px`);
           el.style.setProperty('--scroll-duration', `${Math.max(3, distance / 30)}s`);
         } else {
