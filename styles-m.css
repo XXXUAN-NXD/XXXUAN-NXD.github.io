@@ -100,7 +100,7 @@
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
     
     .close-modal {
-      position: fixed; top: 20px; right: 40px;
+      position: absolute; top: 20px; right: 40px;
       background: none; border: none; color: var(--accent); font-size: 40px;
       cursor: pointer; transition: transform 0.3s; z-index: 210;
     }
